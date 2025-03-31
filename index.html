@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="descriptoin" content="NighthawkDev art commissions.">
+		<title>Commissions</title>
+		
+		<link href="./CSS/base.css?version=0.1.3" type="text/css" rel="stylesheet">
+		<link href="./CSS/editor.css?version=0.3.0" type="text/css" rel="stylesheet">
+
+	</head>
+	<body onload="AddCell();SetEditorParamaterStyles();SetRangeStyles();">
+		<h1 style="text-align: center;">VERSION 0.19.9.0007 - 12/5/2024, 7:08 AM PT</h1>
+		
+		<main>
+			<div id="commissionEditor">
+				<div class="sectionTitle">
+					<h1>COMMISSION EDITOR</h1>
+					<p class="sideTitle rt">Use the Editor to customize your commission.</p>
+				</div>
+				<div id="editorTools">
+					<div id="editor" class="MatrixMode">
+						<div class="estimatorTitle" id="estimateType">
+							<select id="typeName" oninput="SelectCommission();">
+								<optgroup label="STICKERS">
+									<option selected>STICKER SET</option>
+									<option>STICKERS AS COMICS</option>
+								</optgroup>
+							</select>
+							<h2 id="estimatePrice">ESTIMATE: $00.00</h2>
+						</div>
+						<div id="stickerParameters">
+							<select aria-label="Character Count" id="charCount" oninput="SetParameters(false, false, true);">
+								<option disabled selected>Characters Present</option>
+								<option>1 Character</option>
+								<option>2 Characters, [+20%]</option>
+							</select>
+							<select aria-label="Lighting Style" id="lighting" oninput="SetParameters(true, false, false);">
+								<option disabled selected>Lighting Styles</option>
+								<option>Simple Lighting</option>
+								<option>Unlit, [-15%]</option>
+							</select>
+						</div>
+
+						<div id="editorView">
+						</div>
+
+						<p class="counter" id="cellCounter"></p>
+						<div id="stickerControls">
+							<button id="addCell" onclick="AddCell();">
+								<img src="./Graphics/Icons/Add.webp"  width="20px" height="20px">
+								<p>Add Sticker</p>
+							</button>
+							<button id="selectCell" onclick="SelectAll();">
+								<img src="./Graphics/Icons/Select All.webp"  width="20px" height="20px">
+								<p>Select All</p>
+							</button>
+							<button id="deleteCell" onclick="DeleteCells();">
+								<img src="./Graphics/Icons/Delete.webp"  width="20px" height="20px">
+								<p>Delete Sticker(s)</p>
+							</button>
+							<button id="deselectCell" onclick="DeselectAll();">
+								<img src="./Graphics/Icons/Deselect All.webp"  width="20px" height="20px">
+								<p>Deselect All</p>
+							</button>
+						</div>
+					</div>
+
+					<div id="estimateTotal">
+						<div class="estimatorTitle">
+							<h2>ESTIMATE RANGE: $00.00 - $00.00</h2>
+						</div>
+
+						<div id="commissionList">
+								
+						</div>
+						<p class="counter" id="listCounter">0 / 4</p>
+
+						<button id="addToTotal" onclick="AddToReceipt();">
+							<img src="./Graphics/Icons/Add.webp" width="20px" height="20px">
+							<p>Add Customizations</p>
+						</button>
+						<button id="clearEstimate" onclick="ClearReceipt();">
+							<img src="./Graphics/Icons/Clear.webp" width="20px" height="20px">
+							<p>Clear Customizations</p>
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+	</body>
+
+	<script src="./JS/editor.js?version = 2.3.0"></script>
+</html>
