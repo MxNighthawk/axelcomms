@@ -4,9 +4,11 @@ class Option
 	detail;
 	value;
 
-	constructor(element)
+	constructor(parent, index)
 	{
-		this.detail = getComputedStyle(element).backgroundImage;
+		let element = parent.getElementsByClassName("option")[index];
+
+		this.detail = element.style.backgroundImage;
 		this.value = element.innerText;
 	}
 }
@@ -18,10 +20,10 @@ class Dropdown
 	options = [];
 	active = false;
 
-	constructor(display, internalList, options)
+	constructor(parent, options)
 	{
-		this.list = internalList;
-		this.nameDisplay = display;
+		this.list = parent.getElementsByClassName("selectList")[0];
+		this.nameDisplay = parent.getElementsByClassName("selectedName")[0];
 		this.options = options;
 
 		this.SetValue(0);

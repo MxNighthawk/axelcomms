@@ -14,9 +14,9 @@
 			<h1 id="modeTitle">Commission Estimator</h1>
 
 			<div id="estimatorViewport">
-				<div class="contextMenu">
+				<div class="contextMenu" id="productMenu">
 					<div class="cards">
-						<div class="itemCard">
+						<div class="productCard">
 							<div class="fieldGrid">
 								<div class="graphicPreview">
 									<p class="productName">Sticker Set</p>
@@ -31,37 +31,27 @@
 								<a href="#" class="deleteButton"></a>
 							</div>
 						</div>
+					</div>
 
-						<div class="itemCard">
-							<div class="fieldGrid">
-								<div class="graphicPreview" style="background-position: center;">
+					<div class="addCard">
+						<div class="fieldGrid">
+							<a class="addButton" href="#">
+								+
+							</a>
+							<h2 class="addPrompt">ADD ANOTHER ITEM</h2>
+							<div class="select" onmouseleave="javascript:productDropdown.DisplayList(true);">
+								<p class="selectedName" onclick="javascript:productDropdown.DisplayList();"></p>
+								<div class="selectList">
+									<div class="option" onclick="javascript:productDropdown.SetValue(0);">Sticker Set</div>
+									<div class="option" onclick="javascript:productDropdown.SetValue(1);">Emoji Set</div>
+									<div class="option" onclick="javascript:productDropdown.SetValue(2);">Character Art</div>
 								</div>
-								<textarea class="manualProductDesc" type="text" autocomplete="off" placeholder="Describe your sticker..."></textarea>
-								<p class="styleInfo">&middot; Shaded, Refined, Full Body</p>
-							</div>
-							
-							<div class="controlRow">
-								<p class="total">$999.99</p>
-								<a href="#" class="editButton">EDIT</a>
-								<a href="#" class="deleteButton"></a>
 							</div>
 						</div>
-						
-						<div class="itemCard">
-							<div class="fieldGrid">
-								<div class="graphicPreview" style="background-position: center;">
-								</div>
-								<textarea class="manualProductDesc" type="text" autocomplete="off" placeholder="Describe your sticker..."></textarea>
-								<p class="styleInfo">&middot; Shaded, Refined, Full Body</p>
-							</div>
-							
-							<div class="controlRow">
-								<p class="total">$999.99</p>
-								<a href="#" class="editButton">EDIT</a>
-								<a href="#" class="deleteButton"></a>
-							</div>
-						</div>
-						
+					</div>
+				</div>
+				<div class="contextMenu" id="setMenu">
+					<div class="cards">
 						<div class="itemCard">
 							<div class="fieldGrid">
 								<div class="graphicPreview" style="background-position: center;">
@@ -83,48 +73,90 @@
 							<a class="addButton" href="#">
 								+
 							</a>
-							<h2 class="addPrompt">ADD ANOTHER ITEM</h2>
-							<div class="select" onmouseleave="javascript:dropdowns[0].DisplayList(true);">
-								<p class="selectedName" onclick="javascript:dropdowns[0].DisplayList();"></p>
+							<h2 class="addPrompt" style="text-align: center;">ADD ANOTHER ITEM</h2>
+						</div>
+					</div>
+				</div>
+				<div class="contextMenu" id="itemEditor">
+					<div class="editorCard">
+						<div class="graphicPreview">
+						</div>
+						<div class="controlTable">
+							<div class="select" onmouseleave="javascript:editorDropdowns[0].DisplayList(true);">
+								<p class="selectedName" onclick="javascript:editorDropdowns[0].DisplayList();"></p>
 								<div class="selectList">
-									<div class="option" onclick="javascript:dropdowns[0].SetValue(0);">Sticker Set</div>
-									<div class="option" onclick="javascript:dropdowns[0].SetValue(1);">Emoji Set</div>
-									<div class="option" onclick="javascript:dropdowns[0].SetValue(2);">Character Art</div>
+									<div class="option" onclick="javascript:editorDropdowns[0].SetValue(0);">Sketchy</div>
+									<div class="option" onclick="javascript:editorDropdowns[0].SetValue(1);">Refined</div>
+								</div>
+							</div>
+							<div class="select" onmouseleave="javascript:editorDropdowns[1].DisplayList(true);">
+								<p class="selectedName" onclick="javascript:editorDropdowns[1].DisplayList();"></p>
+								<div class="selectList">
+									<div class="option" onclick="javascript:editorDropdowns[1].SetValue(0);">Plain</div>
+									<div class="option" onclick="javascript:editorDropdowns[1].SetValue(1);">Colored</div>
+									<div class="option" onclick="javascript:editorDropdowns[1].SetValue(2);">Shaded</div>
+								</div>
+							</div>
+							<div class="select" onmouseleave="javascript:editorDropdowns[2].DisplayList(true);">
+								<p class="selectedName" onclick="javascript:editorDropdowns[2].DisplayList();"></p>
+								<div class="selectList">
+									<div class="option" onclick="javascript:editorDropdowns[2].SetValue(0);">Static (0s)</div>
+									<div class="option" onclick="javascript:editorDropdowns[2].SetValue(1);">Short (0.5s ~ 1.5s)</div>
+									<div class="option" onclick="javascript:editorDropdowns[2].SetValue(2);">Long (1.5s ~ 3s)</div>
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
-				<!-- <div class="contextMenu"></div>
-				<div class="contextMenu"></div> -->
 			</div>
 
-			<div class="saveControlRow">
-				<p class="grandTotal">TOTAL &middot;</b> $999.99</p>
+			<div class="saveControlRow" id="productControl">
+				<p class="grandTotal">TOTAL &middot; $999.99</p>
 				<a href="#" id="invoiceButton">GET INVOICE</a>
+			</div>
+			<div class="saveControlRow" id="setControl">
+				<p class="grandTotal">SET COST &middot; $999.99</p>
+				<a href="#" id="updateSet">UPDATE SET</a>
+			</div>
+			<div class="saveControlRow" id="itemControl">
+				<p class="grandTotal">ITEM COST &middot; $999.99</p>
+				<a href="#" id="updateItem">UPDATE ITEM</a>
 			</div>
 		</div>
 	</body>
 
 	<script src="/JS/selectDropdown.js"></script>
 	<script>
-		let displays = document.getElementsByClassName("selectedName");
-		let lists = document.getElementsByClassName("selectList");
-		let options = document.getElementsByClassName("option");
+		let productAddSelect = document.getElementById("productMenu").getElementsByClassName("select");
+		let editorSelects = document.getElementsByClassName("controlTable")[0].getElementsByClassName("select");
 
-		let dropdowns = [
-			new Dropdown(displays[0], lists[0], [
-				new Option(options[0]),
-				new Option(options[1]),
-				new Option(options[2]),
-			])
+		let productDropdown = new Dropdown(productAddSelect[0], [
+				new Option(productAddSelect[0], 0),
+				new Option(productAddSelect[0], 1),
+				new Option(productAddSelect[0], 2),
+			]);
+
+		let editorDropdowns = [
+			new Dropdown(editorSelects[0], [
+				new Option(editorSelects[0], 0),
+				new Option(editorSelects[0], 1),
+			]),
+			new Dropdown(editorSelects[1], [
+				new Option(editorSelects[1], 0),
+				new Option(editorSelects[1], 1),
+				new Option(editorSelects[1], 2),
+			]),
+			new Dropdown(editorSelects[2], [
+				new Option(editorSelects[2], 0),
+				new Option(editorSelects[2], 1),
+				new Option(editorSelects[2], 2),
+			]),
 		];
 
 		function DisableAllDropdowns()
 		{
-			for (let index = 0; index < dropdowns.length; index++) {
-				const element = dropdowns[index];
+			for (let index = 0; index < editorDropdowns.length; index++) {
+				const element = editorDropdowns[index];
 				element.DisplayList(true);
 			}
 		}
