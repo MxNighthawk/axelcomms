@@ -79,7 +79,7 @@ body {
 
 .select {
 	user-select: none;
-	background-color: #00000044;
+	background-color: #00221B;
 	color: white;
 
 	font-size: 18px;
@@ -127,7 +127,6 @@ body {
 }
 
 .option, .selectedName {
-	background-image: url("/Graphics/icons/sticker.png");
 	background-repeat: no-repeat;
 	background-size: 16px;
 	background-position: 6px;

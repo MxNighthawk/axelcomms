@@ -105,13 +105,15 @@
 .editorCard {
 	display: grid;
 	gap: 4px;
+
+	margin-bottom: 0px;
 }
 .controlTable {
 	background-color: black;
 	padding: 8px;
 
 	border-radius: 4px;
-	height: 25vh;
+	height: calc(25vh - 8px);
 
 	display: grid;
 	grid-template-rows: repeat(3, min-content);
@@ -209,6 +211,9 @@ textarea, input[type="text"]:focus {
 }
 
 .editButton, .deleteButton, #invoiceButton, #updateSet, #updateItem {
+	-webkit-user-drag: none;
+	user-select: none;
+
 	background-size: 24px;
 	background-repeat: no-repeat;
 
@@ -247,6 +252,7 @@ textarea, input[type="text"]:focus {
 	background-color: #ffcc4a;
 }
 #updateSet, #updateItem {
+	font-size: 21px;
 	color: black;
 	background-color: #00ffa3;
 }

@@ -27,7 +27,7 @@
 							
 							<div class="controlRow">
 								<p class="total">$999.99</p>
-								<a href="#" class="editButton">EDIT</a>
+								<a href="javascript:SetFocusedMenu(1);" class="editButton">EDIT</a>
 								<a href="#" class="deleteButton"></a>
 							</div>
 						</div>
@@ -62,7 +62,7 @@
 							
 							<div class="controlRow">
 								<p class="total">$999.99</p>
-								<a href="#" class="editButton">EDIT</a>
+								<a href="javascript:SetFocusedMenu(2);" class="editButton">EDIT</a>
 								<a href="#" class="deleteButton"></a>
 							</div>
 						</div>
@@ -116,51 +116,15 @@
 			</div>
 			<div class="saveControlRow" id="setControl">
 				<p class="grandTotal">SET COST &middot; $999.99</p>
-				<a href="#" id="updateSet">UPDATE SET</a>
+				<a href="javascript:SetFocusedMenu(0);" id="updateSet">UPDATE SET</a>
 			</div>
 			<div class="saveControlRow" id="itemControl">
 				<p class="grandTotal">ITEM COST &middot; $999.99</p>
-				<a href="#" id="updateItem">UPDATE ITEM</a>
+				<a href="javascript:SetFocusedMenu(1);" id="updateItem">UPDATE ITEM</a>
 			</div>
 		</div>
 	</body>
 
 	<script src="/JS/selectDropdown.js"></script>
-	<script>
-		let productAddSelect = document.getElementById("productMenu").getElementsByClassName("select");
-		let editorSelects = document.getElementsByClassName("controlTable")[0].getElementsByClassName("select");
-
-		let productDropdown = new Dropdown(productAddSelect[0], [
-				new Option(productAddSelect[0], 0),
-				new Option(productAddSelect[0], 1),
-				new Option(productAddSelect[0], 2),
-			]);
-
-		let editorDropdowns = [
-			new Dropdown(editorSelects[0], [
-				new Option(editorSelects[0], 0),
-				new Option(editorSelects[0], 1),
-			]),
-			new Dropdown(editorSelects[1], [
-				new Option(editorSelects[1], 0),
-				new Option(editorSelects[1], 1),
-				new Option(editorSelects[1], 2),
-			]),
-			new Dropdown(editorSelects[2], [
-				new Option(editorSelects[2], 0),
-				new Option(editorSelects[2], 1),
-				new Option(editorSelects[2], 2),
-			]),
-		];
-
-		function DisableAllDropdowns()
-		{
-			for (let index = 0; index < editorDropdowns.length; index++) {
-				const element = editorDropdowns[index];
-				element.DisplayList(true);
-			}
-		}
-		
-		window.onpageswap += DisableAllDropdowns();
-	</script>
+	<script src="/JS/calculator.js"></script>
 </html>
