@@ -1,0 +1,217 @@
+.fieldGrid {
+	display: grid;
+	gap: 4px;
+
+	grid-template-columns: 144px 1fr;
+	grid-template-rows: min-content 1.5fr;
+}
+.addCard .fieldGrid {
+	grid-template-columns: 74px 1fr;
+}
+
+.addCard, .itemCard {
+	padding: 4px;
+	border-radius: 4px;
+
+	height: max-content;
+	margin: auto;
+}
+.addCard {
+	color: #00ffa3;
+	background-color: #002f25;
+	outline: dashed 4px #007a4e;
+	
+	width: calc(100% - 48px);
+
+	padding: 16px;
+	margin: 4px 0px;
+	margin-top: 12px;
+	margin-left: 4px;
+}
+.addButton {
+	background-color: #007a4e;
+	font-size: 64px;
+	line-height: 52px;
+
+	color: #00ffa3;
+
+	text-decoration: none;
+	text-align: center;
+
+	aspect-ratio: 1 / 1;
+	grid-row: 1 / 3;
+
+	width: 64px;
+	clip-path: circle();
+}
+.addPrompt {
+	font-style: italic;
+	letter-spacing: 1px;
+	margin: 0px;
+}
+
+.itemCard {
+	background-color: #007a4e;
+
+	width: calc(100% - 16px);
+
+	margin-bottom: 8px;
+	margin-left: 0px;
+}
+.styleInfo {
+	background-image: url('/Graphics/icons/info.png');
+	background-size: 24px;
+
+	background-repeat: no-repeat;
+	background-position: left;
+
+	color: white;
+	text-transform: uppercase;
+
+	margin: 0px;
+	padding: 6px;
+	padding-top: 4px;
+	padding-left: 26px;
+}
+
+.graphicPreview, .manualProductName, .manualProductDesc {
+	background-color: #002f25;
+	border-radius: 4px;
+}
+.graphicPreview {
+	grid-row: 1 / 3;
+	position: relative;
+
+	background-image: url("/Graphics/Untitled174_20240703183104.png");
+	background-position: center calc(50% - 10px);
+	background-repeat: no-repeat;
+	background-size: 80%;
+}
+.productName {
+	text-transform: uppercase;
+	text-align: center;
+
+	font-weight: bold;
+	color: white;
+	letter-spacing: 1px;
+
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+
+	margin: 0px auto;
+	padding: 4px;
+}
+
+textarea {
+	min-height: 102px;
+	max-height: 256px;
+	padding: 8px;
+	resize: vertical;
+}
+textarea, input {
+	font-size: 16px;
+	
+	border: none;
+	color: white;
+
+	padding-left: 8px;
+}
+textarea, input[type="text"]::placeholder {
+	font-weight: bold;
+	font-style: italic;
+}
+textarea, input[type="text"]:focus {
+	outline: none;
+}
+
+.manualProductName {
+	height: 32px;
+}
+
+.saveControlRow, .controlRow {
+	font-weight: bold;
+
+	display: grid;
+	gap: 4px;
+}
+.controlRow {
+	font-size: 18px;
+	margin-top: 4px;
+
+	grid-template-columns: 144px 1fr 32px;
+}
+.saveControlRow {
+	margin-top: 8px;
+	grid-template-columns: auto 1fr;
+}
+
+.total, .grandTotal {
+	background-image: url('/Graphics/icons/money.png');
+	background-size: 24px;
+
+	background-repeat: no-repeat;
+	background-position: left;
+
+	color: #ffcc4a;
+	letter-spacing: 1px;
+
+	margin: 0px;
+	padding-left: 48px;
+}
+.total {
+	background-position: 8px;
+
+	font-size: 21px;
+	text-align: center;
+
+	line-height: 32px;
+
+	padding-left: 32px;
+}
+.grandTotal {
+	font-size: 24px;
+	margin-right: 8px;
+
+	padding-left: 32px;
+}
+
+.editButton, .deleteButton, #invoiceButton {
+	background-size: 24px;
+	background-repeat: no-repeat;
+
+	text-decoration: none;
+	border-radius: 4px;
+	
+	display: block;
+	padding: 4px;
+	
+	margin: 0px;
+	flex: 1;
+
+	text-align: center;
+}
+.editButton {
+	background-image: url('/Graphics/icons/wrench.png');
+	background-position: 4px;
+
+	color: black;
+	background-color: #00ffa3;
+}
+.deleteButton {
+	background-image: url('/Graphics/icons/delete.png');
+	background-position: center;
+
+	color: white;
+	background-color: #fd2bcb;
+}
+#invoiceButton {
+	background-image: url('/Graphics/icons/download.png');
+	background-position: 4px;
+
+	font-size: 21px;
+	color: black;
+
+	background-color: #ffcc4a;
+}
