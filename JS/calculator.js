@@ -324,7 +324,7 @@ function TotalUp(id)
 				total += element.cost;
 			}
 
-			productMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `$${total.toFixed(2)}`;
+			productMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `TOTAL &middot; $${total.toFixed(2)}`;
 			break;
 		case 1:
 			for (let i = 0; i < loadSetPointer.length; i++) {
@@ -332,11 +332,9 @@ function TotalUp(id)
 				total += element.cost;
 			}
 
-			setMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `$${total.toFixed(2)}`;
+			setMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `SET COST &middot; $${total.toFixed(2)}`;
 			break;
 		case 2:
-			console.log(itemClassPointer.startingPrice);
-			
 			// itemClassPointer.motionStyle = animSlider.selected;
 			
 			if(productClassPionter.prodName == "CHARACTER ART")
@@ -350,7 +348,7 @@ function TotalUp(id)
 			else
 				total = itemClassPointer.startingPrice;
 		
-			itemMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `$${total.toFixed(2)}`;
+			itemMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `ITEM COST &middot; $${total.toFixed(2)}`;
 			break;
 	}
 }
