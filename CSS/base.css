@@ -2,6 +2,11 @@
 	font-family: 'Alata';
 }
 
+:root {
+	--frameColor: #765400;
+	--frameOutline: #ffcc4a;
+}
+
 @font-face {
 	font-family: 'Alata';
 	src: url("../Font/Alata-Regular.ttf") format('truetype');
@@ -19,11 +24,28 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
+}
+#credits {
+	background-color: var(--frameColor);
+	outline: solid 4px var(--frameOutline);
+	border: solid 1px var(--frameColor);
+	border-radius: 4px;
+	
+	letter-spacing: 0.5px;
+	text-align: center;
+
+	color: var(--frameOutline);
+	margin: 0px;
+	margin-top: 16px;
+	padding: 4px 8px;
+
+	width: 90vw;
 }
 
 #modeTitle {
 	text-transform: uppercase;
-	color: #ffcc4a;
+	color: var(--frameOutline);
 	letter-spacing: 1px;
 
 	text-align: center;
@@ -33,15 +55,14 @@ body {
 }
 
 #estimatorBoundary {
-	background-color: #765400;
-	outline: solid 4px #ffcc4a;
-	border: solid 1px #765400;
+	background-color: var(--frameColor);
+	outline: solid 4px var(--frameOutline);
+	border: solid 1px var(--frameColor);
 	border-radius: 4px;
 
 	display: grid;
 	grid-template-rows: min-content 1fr min-content;
 	padding: 8px;
-
 	
 	width: 100%;
 	height: 100%;
@@ -75,6 +96,47 @@ body {
 	overflow-y: scroll;
 	
 	height: 100%;
+}
+
+.slider{
+	display: grid;
+	color: white;
+
+	background-color: #08211c;
+	outline: dashed 2px #007a4e;
+	border-radius: 4px;
+	
+	align-items: center;
+	gap: 0px 8px;
+	
+	grid-template-columns: auto 1fr auto;
+	padding: 8px;
+}
+.slider .sliderName, .slider .sliderValue {
+	text-align: center;
+	
+	margin: 0px;
+	padding: 0px;
+}
+.slider input {
+	appearance: none;
+	position: relative;
+
+	background: #004233;
+
+	height: 12px;
+	padding: 0px;
+	margin: 0px 4px;
+}
+.slider input::-webkit-slider-thumb {
+	appearance: none;
+	
+	background: #00ffa3;
+	outline: dashed 2px #007a4e;
+	transform: rotateZ(45deg);
+	
+	height: 16px;
+	width: 16px;
 }
 
 .select {

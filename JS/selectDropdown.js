@@ -1,8 +1,6 @@
 /*
-
 	Copyright MxNighthawk 2025. All Rights Reserved.
 	Programmed by Jesus Barajas Torres / MxNighthawk.
-
 */
 
 class Option
@@ -10,14 +8,16 @@ class Option
 	index;
 	detail;
 	value;
+	num;
 
-	constructor(parent, index, optionImage)
+	constructor(parent, index, optionImage, val = 0)
 	{
 		let element = parent.getElementsByClassName("option")[index];
 		element.style.backgroundImage = `url('./Graphics/icons/${optionImage}.png')`;
 
 		this.detail = element.style.backgroundImage;
 		this.value = element.innerText;
+		this.num = val;
 	}
 }
 class Dropdown
@@ -26,6 +26,8 @@ class Dropdown
 	nameDisplay;
 	options = [];
 	active = false;
+	selected;
+	value;
 
 	constructor(parent, options, capitalize = false)
 	{
@@ -55,6 +57,9 @@ class Dropdown
 		this.nameDisplay.innerText = this.options[indx].value;
 		this.nameDisplay.style.backgroundImage = this.options[indx].detail;
 		this.list.style.setProperty("display", "none");
+
+		this.selected = this.options[indx].value;
+		this.value = this.options[indx].num;
 	}
 }
 
@@ -69,18 +74,18 @@ let productDropdown = new Dropdown(productAddSelect[0], [
 
 let editorDropdowns = [
 	new Dropdown(editorSelects[0], [
-		new Option(editorSelects[0], 0),
-		new Option(editorSelects[0], 1),
+		new Option(editorSelects[0], 0, "sticker", 0.6),
+		new Option(editorSelects[0], 1, "sticker", 0.8),
+		new Option(editorSelects[0], 2, "sticker", 1),
 	]),
 	new Dropdown(editorSelects[1], [
-		new Option(editorSelects[1], 0),
-		new Option(editorSelects[1], 1),
-		new Option(editorSelects[1], 2),
+		new Option(editorSelects[1], 0, "sticker", 0),
+		new Option(editorSelects[1], 1, "sticker", 15),
 	]),
 	new Dropdown(editorSelects[2], [
-		new Option(editorSelects[2], 0),
-		new Option(editorSelects[2], 1),
-		new Option(editorSelects[2], 2),
+		new Option(editorSelects[2], 0, "sticker", 0),
+		new Option(editorSelects[2], 1, "sticker", 25),
+		new Option(editorSelects[2], 2, "sticker", 50),
 	]),
 ];
 
