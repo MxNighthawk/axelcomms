@@ -170,13 +170,13 @@ class ProductCard extends Card
 		switch(productName)
 		{
 			case "STICKER SET":
-				this.graphic.style.backgroundImage = "url('../Graphics/icons/sticker.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/icons/sticker.png')";
 			break;
 			case "EMOJI SET":
-				this.graphic.style.backgroundImage = "url('../Graphics/icons/emoji.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/icons/emoji.png')";
 			break;
 			case "CHARACTER ART":
-				this.graphic.style.backgroundImage = "url('../Graphics/icons/char_art.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/icons/char_art.png')";
 			break;
 		}
 		
@@ -230,15 +230,15 @@ class ItemCard extends Card
 		switch(productClassPionter.prodName)
 		{
 			case "STICKER SET":
-				this.graphic.style.backgroundImage = "url('../Graphics/previews/stickers/sticker.webp')";
+				this.graphic.style.backgroundImage = "url('./Graphics/previews/stickers/sticker.webp')";
 				initialPrice = 16;
 			break;
 			case "EMOJI SET":
-				this.graphic.style.backgroundImage = "url('../Graphics/previews/char_art/head_sketchy_plain.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/previews/char_art/head_sketchy_plain.png')";
 				initialPrice = 10;
 			break;
 			case "CHARACTER ART":
-				this.graphic.style.backgroundImage = "url('../Graphics/previews/char_art/head_sketchy_plain.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/previews/char_art/head_sketchy_plain.png')";
 				initialPrice = 25;
 			break;
 		}
