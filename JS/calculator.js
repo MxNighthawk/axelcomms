@@ -342,7 +342,7 @@ function SetFocusedMenu(id)
 			focusedMenu = setMenu;
 			calculatorBody.style.setProperty("--frameColor", "#007a4e");
 			calculatorBody.style.setProperty("--frameOutline", "#00ffa3");
-			calculatorMode.innerText = "Edit Comission...";
+			calculatorMode.innerText = "Edit Commission...";
 			break;
 		case 2:
 			focusedMenu = itemMenu;
