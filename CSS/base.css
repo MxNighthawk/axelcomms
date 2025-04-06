@@ -74,7 +74,7 @@ body {
 	height: 100%;
 	
 	max-width: 90vw;
-	max-height: calc(90vh - 32px);
+	max-height: calc(90vh - 64px);
 }
 #estimatorViewport {
 	background-color: black;
