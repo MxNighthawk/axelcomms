@@ -5,8 +5,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Commission Calculator</title>
 
-		<link href="./CSS/base.css?version=0.0.3" type="text/css" rel="stylesheet"></link>
-		<link href="./CSS/itemCards.css?version=0.0.3" type="text/css" rel="stylesheet"></link>
+		<link href="./CSS/base.css?version=1.0.0" type="text/css" rel="stylesheet"></link>
+		<link href="./CSS/itemCards.css?version=1.0.0" type="text/css" rel="stylesheet"></link>
 	</head>
 
 	<body>
@@ -25,14 +25,6 @@
 								+
 							</a>
 							<h2 class="addPrompt">ADD ANOTHER ITEM</h2>
-							<div class="select" onmouseleave="javascript:productDropdown.DisplayList(true);">
-								<p class="selectedName" onclick="javascript:productDropdown.DisplayList();"></p>
-								<div class="selectList">
-									<div class="option" onclick="javascript:productDropdown.SetValue(0);">Sticker Set</div>
-									<div class="option" onclick="javascript:productDropdown.SetValue(1);">Emoji Set</div>
-									<div class="option" onclick="javascript:productDropdown.SetValue(2);">Character Art</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -55,34 +47,11 @@
 						<div class="graphicPreview">
 						</div>
 						<div class="controlTable">
-							<div class="select" onmouseleave="javascript:editorDropdowns[0].DisplayList(true);">
-								<p class="selectedName" onclick="javascript:editorDropdowns[0].DisplayList();"></p>
-								<div class="selectList">
-									<div class="option" onclick="javascript:editorDropdowns[0].SetValue(0);TotalUp(2);">Head (-40%)</div>
-									<div class="option" onclick="javascript:editorDropdowns[0].SetValue(1);TotalUp(2);">Bust (-20%)</div>
-									<div class="option" onclick="javascript:editorDropdowns[0].SetValue(2);TotalUp(2);">Full Body</div>
-								</div>
-							</div>
-							<div class="select" onmouseleave="javascript:editorDropdowns[1].DisplayList(true);">
-								<p class="selectedName" onclick="javascript:editorDropdowns[1].DisplayList();"></p>
-								<div class="selectList">
-									<div class="option" onclick="javascript:editorDropdowns[1].SetValue(0);TotalUp(2);">Sketchy</div>
-									<div class="option" onclick="javascript:editorDropdowns[1].SetValue(1);TotalUp(2);">Refined (+$15)</div>
-								</div>
-							</div>
-							<div class="select" onmouseleave="javascript:editorDropdowns[2].DisplayList(true);">
-								<p class="selectedName" onclick="javascript:editorDropdowns[2].DisplayList();"></p>
-								<div class="selectList">
-									<div class="option" onclick="javascript:editorDropdowns[2].SetValue(0);TotalUp(2);">Plain</div>
-									<div class="option" onclick="javascript:editorDropdowns[2].SetValue(1);TotalUp(2);">Colored (+$25)</div>
-									<div class="option" onclick="javascript:editorDropdowns[2].SetValue(2);TotalUp(2);">Shaded (+$50)</div>
-								</div>
-							</div>
-							<!-- <div class="slider">
+							<div class="slider">
 								<p class="sliderName">Animation Length</p>
-								<input type="range" onchange="javascript:console.log(animSlider.value);" min="0" max="100" value="0">
+								<input type="range" min="0" max="3" step="0.1" value="0">
 								<p class="sliderValue">3s</p>
-							</div> -->
+							</div>
 						</div>
 					</div>
 				</div>
@@ -90,7 +59,7 @@
 
 			<div class="saveControlRow" id="productControl">
 				<p class="grandTotal">TOTAL &middot; $</p>
-				<a href="#" id="invoiceButton">GET INVOICE</a>
+				<a href="javascript:PrintInvoice();" id="invoiceButton">GET INVOICE</a>
 			</div>
 			<div class="saveControlRow" id="setControl">
 				<p class="grandTotal">SET COST &middot; $</p>
@@ -102,9 +71,10 @@
 			</div>
 		</div>
 
-		<p id="credits">Created by: Jesus Barajas / MxNighthawk</p>
+		<a href="https://x.com/NighthawkDev" target="_blank" id="credits">Created by: Jesus Barajas / NighthawkDev</a>
+		<div id="print"></div>
 	</body>
 
-	<script src="./JS/selectDropdown.js?version=0.0.3"></script>
-	<script src="./JS/calculator.js?version=0.0.32"></script>
+	<script src="./JS/inputUI.js?version=1.0.0"></script>
+	<script src="./JS/calculator.js?version=1.0.0"></script>
 </html>

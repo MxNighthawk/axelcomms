@@ -12,6 +12,9 @@
 	src: url("../Font/Alata-Regular.ttf") format('truetype');
 }
 
+hr {
+	border: solid 2px black;
+}
 body {
 	background-color: #08211c;
 
@@ -42,6 +45,9 @@ body {
 
 	width: 90vw;
 }
+#print {
+	display: none;
+}
 
 #modeTitle {
 	text-transform: uppercase;
@@ -68,7 +74,7 @@ body {
 	height: 100%;
 	
 	max-width: 90vw;
-	max-height: 90vh;
+	max-height: calc(90vh - 32px);
 }
 #estimatorViewport {
 	background-color: black;
@@ -109,7 +115,7 @@ body {
 	align-items: center;
 	gap: 0px 8px;
 	
-	grid-template-columns: auto 1fr auto;
+	grid-template-columns: auto 1fr 32px;
 	padding: 8px;
 }
 .slider .sliderName, .slider .sliderValue {
@@ -206,4 +212,18 @@ body {
 
 #setMenu, #itemEditor, #setControl, #itemControl {
 	display: none;
+}
+
+@media print {
+	body {
+		visibility: hidden;
+	}
+	
+	#print {
+		display: block;
+		visibility: visible;
+		position: absolute;
+		left: 0px;
+		top: 0px;
+	}
 }

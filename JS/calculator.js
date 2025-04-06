@@ -17,10 +17,21 @@ let itemMenu = {
 	controls: document.getElementById("itemControl")
 };
 
-// let animSlider = document.getElementsByClassName("slider")[0].getElementsByTagName('input')[0];
+let animSlider = document.getElementsByClassName("slider")[0].getElementsByTagName('input')[0];
+let numberDisplay = document.getElementsByClassName("slider")[0].getElementsByClassName('sliderValue')[0];
+
+animSlider.addEventListener('input', () =>
+{
+	numberDisplay.textContent = `${animSlider.value}s`;
+	itemClassPointer.motionID = animSlider.value;
+	TotalUp(2);
+});
 
 let lastMenu = null;
 let focusedMenu = productMenu;
+
+let invoiceBttn = document.getElementById("invoiceButton");
+invoiceBttn.style.opacity = "0.25";
 
 let calculatorBody = document.getElementById("estimatorBoundary");
 let calculatorMode = document.getElementById("modeTitle");
@@ -94,6 +105,9 @@ class CardControl extends ControlRow
 			deletePointer.remove();
 			loadSetPointer = [];
 
+			if(productMenu.products.length == 0)
+				invoiceBttn.style.opacity = "0.25";
+
 			TotalUp(0);
 		});
 	}
@@ -105,10 +119,17 @@ class ItemControl extends ControlRow
 		super();
 		this.edit.addEventListener('click', () =>
 		{
-			editorSelects[0].style.setProperty("display", productClassPionter.prodName == "CHARACTER ART" ? "block" : "none");
-			editorSelects[1].style.setProperty("display", productClassPionter.prodName == "CHARACTER ART" ? "block" : "none");
-			editorSelects[2].style.setProperty("display", productClassPionter.prodName == "CHARACTER ART" ? "block" : "none");
+			characterParmaters[0].element.style.setProperty("display", productClassPionter.prodName == "CHARACTER ART" ? "block" : "none");
+			characterParmaters[1].element.style.setProperty("display", productClassPionter.prodName == "CHARACTER ART" ? "block" : "none");
+			characterParmaters[2].element.style.setProperty("display", productClassPionter.prodName == "CHARACTER ART" ? "block" : "none");
 			itemClassPointer = classPointer;
+			
+			characterParmaters[0].SetDisplayValue(itemClassPointer.cropID);
+			characterParmaters[1].SetDisplayValue(itemClassPointer.lineID);
+			characterParmaters[2].SetDisplayValue(itemClassPointer.colorID);
+			
+			animSlider.value = itemClassPointer.motionID;
+			numberDisplay.textContent = `${animSlider.value}s`;
 
 			TotalUp(2);
 			SetFocusedMenu(menuIndx);
@@ -116,11 +137,18 @@ class ItemControl extends ControlRow
 
 		this.del.addEventListener('click', () =>
 		{
-			deletePointer = elementPointer;
-			itemClassPointer = classPointer;
+			if(loadSetPointer.length == 1)
+				return;
 			
+			itemClassPointer = classPointer;
+			deletePointer = elementPointer;
+			
+			loadSetPointer.splice(loadSetPointer.indexOf(itemClassPointer), 1);
 			deletePointer.remove();
-			loadSetPointer.splice(loadSetPointer.indexOf(deletePointer), 1);
+
+			if(loadSetPointer.length == 1)
+				loadSetPointer[0].row.del.style.opacity = "0.25";
+			
 			TotalUp(1);
 		});
 	}
@@ -151,7 +179,7 @@ class ProductCard extends Card
 	manualName;
 	prodName;
 	items = [];
-	#row;
+	row;
 
 	constructor(productName, menuIndx)
 	{
@@ -189,11 +217,26 @@ class ProductCard extends Card
 		field.appendChild(this.manualName);
 		field.appendChild(this.description);
 
-		this.#row = new CardControl(this, this.selfElement, this.items, menuIndx);
-		this.#row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+		productClassPionter = this;
+		loadSetPointer = this.items;
+
+		this.row = new CardControl(this, this.selfElement, this.items, menuIndx);
+		this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
 
 		this.selfElement.appendChild(field);
-		this.selfElement.appendChild(this.#row.rowGroup);
+		this.selfElement.appendChild(this.row.rowGroup);
+		
+		let newItem = new ItemCard();
+		itemStack.appendChild(newItem.selfElement);
+		this.items.push(newItem);
+		
+		DisplaySetCards(false);
+		TotalUp(1);
+
+		this.UpdateCost();
+
+		invoiceBttn.style.opacity = "1";
+		this.items[0].row.del.style.opacity = "0.25";
 	};
 
 	UpdateCost()
@@ -204,21 +247,23 @@ class ProductCard extends Card
 			const element = this.items[i];
 			this.cost += element.cost;
 		}
-
-		this.#row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+		
+		this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
 	}
 }
 class ItemCard extends Card
 {
-	cropStyle = "head";
-	lineStyle = "sketchy";
-	colorStyle = "plain";
-	motionStyle = "Static";
+	cropID = 0;
+	lineID = 0;
+	colorID = 0;
+	motionID = 0;
+
 	startingPrice = 0;
 
-	#row;
+	row;
+	info;
 
-	constructor(menuIndx)
+	constructor()
 	{
 		super();
 		this.selfElement.classList.add("itemCard");
@@ -234,41 +279,48 @@ class ItemCard extends Card
 				initialPrice = 16;
 			break;
 			case "EMOJI SET":
-				this.graphic.style.backgroundImage = "url('./Graphics/previews/char_art/head_sketchy_plain.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/previews/emojis/emoji.webp')";
 				initialPrice = 10;
 			break;
 			case "CHARACTER ART":
-				this.graphic.style.backgroundImage = "url('./Graphics/previews/char_art/head_sketchy_plain.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/previews/char_art/head_sketchy_plain.webp')";
 				initialPrice = 25;
 			break;
 		}
 
-		let info = document.createElement("p");
-		info.classList.add("styleInfo");
+		this.info = document.createElement("p");
+		this.info.classList.add("styleInfo");
+		this.UpdateInfo();
 
-		if(productClassPionter.prodName != "CHARACTER ART")
-			info.innerHTML = `&middot; ${this.motionStyle}`;
-		else
-			info.innerHTML = `&middot; ${this.cropStyle}, ${this.lineStyle}, ${this.colorStyle}, ${this.motionStyle}`;
-		
 		this.description.placeholder = "Describe the item...";
 		field.appendChild(this.description);
-		field.appendChild(info);
+		field.appendChild(this.info);
 
 		this.startingPrice = initialPrice;
 		this.cost = initialPrice;
 
-		this.#row = new ItemControl(this, this.selfElement, menuIndx);
-		this.#row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+		this.row = new ItemControl(this, this.selfElement, 2);
+		this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
 
 		this.selfElement.appendChild(field);
-		this.selfElement.appendChild(this.#row.rowGroup);
+		this.selfElement.appendChild(this.row.rowGroup);
 	};
 
 	UpdateCost(val)
 	{
 		this.cost = val;
-		this.#row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+		this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+	}
+	
+	UpdateInfo()
+	{
+		if(productClassPionter.prodName != "CHARACTER ART")
+			this.info.innerHTML = `&middot; ${this.motionID}s`;
+		else
+		{
+			this.info.innerHTML = `&middot; ${characterParmaters[0].display.innerText}, ${characterParmaters[1].display.innerText}, ${characterParmaters[2].display.innerText}, ${this.motionID}s`;
+			this.graphic.style.backgroundImage = `url('./Graphics/previews/char_art/${characterParmaters[0].keys.get(this.cropID)}_${characterParmaters[1].keys.get(this.lineID)}_${characterParmaters[2].keys.get(this.colorID)}.webp')`;
+		}
 	}
 }
 
@@ -335,19 +387,19 @@ function TotalUp(id)
 			setMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `SET COST &middot; $${total.toFixed(2)}`;
 			break;
 		case 2:
-			// itemClassPointer.motionStyle = animSlider.selected;
-			
 			if(productClassPionter.prodName == "CHARACTER ART")
 			{
-				itemClassPointer.cropStyle = editorDropdowns[0].selected;
-				itemClassPointer.lineStyle = editorDropdowns[1].selected;
-				itemClassPointer.colorStyle = editorDropdowns[2].selected;
+				itemClassPointer.cropID = characterParmaters[0].value;
+				itemClassPointer.lineID = characterParmaters[1].value;
+				itemClassPointer.colorID = characterParmaters[2].value;
 
-				total = (itemClassPointer.startingPrice + editorDropdowns[1].value + editorDropdowns[2].value) * editorDropdowns[0].value;
+				total = (itemClassPointer.startingPrice + characterParmaters[2].secondary[itemClassPointer.colorID] + characterParmaters[1].secondary[itemClassPointer.lineID]) * characterParmaters[0].secondary[itemClassPointer.cropID] * (1 + itemClassPointer.motionID * 0.8);
 			}
 			else
-				total = itemClassPointer.startingPrice;
-		
+				total = itemClassPointer.startingPrice * (1 + itemClassPointer.motionID * 0.8);
+			
+			itemClassPointer.UpdateInfo();
+			itemMenu.menu.getElementsByClassName("graphicPreview")[0].style.backgroundImage = itemClassPointer.graphic.style.backgroundImage;
 			itemMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `ITEM COST &middot; $${total.toFixed(2)}`;
 			break;
 	}
@@ -355,17 +407,97 @@ function TotalUp(id)
 
 function AddCard()
 {
-	let newProduct = new ProductCard(productDropdown.nameDisplay.innerText, 1);
+	let newProduct = new ProductCard(productDropdown.names[productDropdown.value], 1);
 	productCardStack.appendChild(newProduct.selfElement);
 	productMenu.products.push(newProduct);
+	
+	TotalUp(0);
 }
 function AddItem()
 {
-	let newItem = new ItemCard(2);
+	let newItem = new ItemCard();
 	itemStack.appendChild(newItem.selfElement);
 	loadSetPointer.push(newItem);
+	
+	productClassPionter.items[0].row.del.style.opacity = "1";
 
 	TotalUp(1);
 }
 
 TotalUp(0);
+
+function PrintInvoice()
+{
+	if(productMenu.products.length == 0)
+		return;
+	
+	let invoice = document.getElementById("print");
+
+	if(invoice.children.length > 0)
+		for (let index = invoice.children.length - 1; index >= 0; index--) {
+			const element = invoice.children[index];
+			invoice.removeChild(element);
+		}
+	
+	let title = document.createElement('h1');
+	title.innerHTML =
+	`
+		AXEL COMMISSIONS - INVOICE
+		<br><small style="font-size: 14px; font-weight: 400;">Disclaimer: This is NOT a final invoice, just an estimate!</small>
+	`;
+
+	invoice.appendChild(title);
+	invoice.appendChild(document.createElement('hr'));
+
+	for (let i = 0; i < productMenu.products.length; i++) {
+		const product = productMenu.products[i];
+		let productName = document.createElement('h2');
+		let information = document.createElement('p');
+		
+		productName.style.marginBottom = "4px";
+		information.style.margin = "0px";
+		
+		productName.textContent = product.prodName;
+		information.innerHTML = 
+		`
+			<b>Name:</b> ${product.manualName.value}
+			<br><b>Description:</b> ${product.description.value}
+			<br><b>Cost:</b> $${product.cost}
+		`;
+		
+		invoice.appendChild(productName);
+		invoice.appendChild(information);
+		
+		for (let t = 0; t < product.items.length; t++) {
+			const item = product.items[t];
+			
+			let itemNumber = document.createElement('h3');
+			itemNumber.innerText = `Item #${t + 1}`;
+			itemNumber.style.marginLeft = "16px";
+			itemNumber.style.marginBottom = "4px";
+
+			let itemInfo = document.createElement('p');
+			itemInfo.style.margin = "0px 16px";
+			
+			itemInfo.innerHTML =
+			`
+				<b>Item Description:</b> ${item.description.value}
+				<br><b>Item Style:</b>${item.info.innerHTML}
+				<br><br><b>Item Cost:</b> $${item.cost}
+			`;
+
+			invoice.appendChild(itemNumber);
+			invoice.appendChild(itemInfo);
+		}
+		
+	}
+
+	invoice.appendChild(document.createElement('hr'));
+
+	let totalPrice = document.createElement('h2');
+	totalPrice.textContent = `TOTAL ESTIMATE: $${total.toFixed(2)}`;
+
+	invoice.appendChild(totalPrice);
+
+	print();
+}

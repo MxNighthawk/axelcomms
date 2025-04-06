@@ -100,13 +100,16 @@ a {
 	background-image: url("");
 	background-position: center calc(50% - 10px);
 	background-repeat: no-repeat;
-	background-size: 80%;
+	background-size: 112px;
+}
+.itemCard .graphicPreview {
+	background-size: 128px;
 }
 .editorCard .graphicPreview, .itemCard .graphicPreview{
 	background-position: center;
 }
 .editorCard .graphicPreview {
-	background-size: 50vh;
+	background-size: contain;
 	height: 50vh;
 }
 .editorCard {
@@ -120,7 +123,7 @@ a {
 	padding: 8px;
 
 	border-radius: 4px;
-	height: calc(25vh - 8px);
+	min-height: calc(25vh - 8px);
 
 	display: grid;
 	grid-template-rows: repeat(4, min-content);
@@ -231,6 +234,7 @@ textarea, input[type="text"]:focus {
 	flex: 1;
 
 	text-align: center;
+	cursor: pointer;
 }
 .editButton {
 	background-image: url('../Graphics/icons/wrench.png');
@@ -259,4 +263,22 @@ textarea, input[type="text"]:focus {
 	font-size: 21px;
 	color: black;
 	background-color: #00ffa3;
+}
+
+@media (max-width: 550px) {
+	.saveControlRow {
+		grid-template-columns: 1fr;
+		grid-template-rows: auto auto;
+	}
+	.controlRow {
+		grid-template-columns: 1fr;
+		grid-template-rows: max-content max-content 32px;
+	}
+	.grandTotal {
+		text-align: center;
+	}
+	.fieldGrid:not(.addCard .fieldGrid) {
+		grid-template-columns: 1fr;
+		grid-template-rows: 144px min-content 1.5fr;
+	}
 }
