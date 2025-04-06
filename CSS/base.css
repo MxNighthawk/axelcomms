@@ -16,6 +16,12 @@ hr {
 	border: solid 2px black;
 }
 body {
+	margin: 0px;
+	padding: 0px;
+
+	overflow-x: hidden;
+}
+#calculator {
 	background-color: #08211c;
 
 	width: 100vw;
@@ -30,10 +36,10 @@ body {
 	flex-direction: column;
 }
 #credits {
-	background-color: var(--frameColor);
+	/* background-color: var(--frameColor);
 	outline: solid 4px var(--frameOutline);
 	border: solid 1px var(--frameColor);
-	border-radius: 4px;
+	border-radius: 4px; */
 	
 	letter-spacing: 0.5px;
 	text-align: center;
@@ -44,9 +50,6 @@ body {
 	padding: 4px 8px;
 
 	width: calc(100% - 32px);
-}
-#print {
-	display: none;
 }
 
 #modeTitle {
@@ -212,18 +215,4 @@ body {
 
 #setMenu, #itemEditor, #setControl, #itemControl {
 	display: none;
-}
-
-@media print {
-	body {
-		visibility: hidden;
-	}
-	
-	#print {
-		display: block;
-		visibility: visible;
-		position: absolute;
-		left: 0px;
-		top: 0px;
-	}
 }

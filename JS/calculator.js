@@ -31,7 +31,12 @@ let lastMenu = null;
 let focusedMenu = productMenu;
 
 let invoiceBttn = document.getElementById("invoiceButton");
+let aliasInput = document.getElementById("alias");
 invoiceBttn.style.opacity = "0.25";
+aliasInput.addEventListener('input', () =>
+{
+	CheckDownloadability();
+});
 
 let calculatorBody = document.getElementById("estimatorBoundary");
 let calculatorMode = document.getElementById("modeTitle");
@@ -42,7 +47,7 @@ let initialPrice = 0;
 let total = 0;
 let setTotal = 0;
 
-let deletePointer = null;
+let delElemPointer = null;
 
 let loadSetPointer = null;
 let productClassPionter = null;
@@ -93,7 +98,7 @@ class CardControl extends ControlRow
 		this.del.addEventListener('click', () =>
 		{
 			loadSetPointer = setPointer;
-			deletePointer = elementPointer;
+			delElemPointer = elementPointer;
 			productClassPionter = classPointer;
 			
 			for (let i = loadSetPointer.length - 1; i >= 0; i--) {
@@ -101,13 +106,11 @@ class CardControl extends ControlRow
 				element.remove();
 			}
 
-			productMenu.products.splice(productMenu.products.indexOf(productClassPionter), 1);
-			deletePointer.remove();
 			loadSetPointer = [];
-
-			if(productMenu.products.length == 0)
-				invoiceBttn.style.opacity = "0.25";
-
+			delElemPointer.remove();
+			productMenu.products.splice(productMenu.products.indexOf(productClassPionter), 1);
+			
+			CheckDownloadability();
 			TotalUp(0);
 		});
 	}
@@ -141,10 +144,10 @@ class ItemControl extends ControlRow
 				return;
 			
 			itemClassPointer = classPointer;
-			deletePointer = elementPointer;
+			delElemPointer = elementPointer;
 			
 			loadSetPointer.splice(loadSetPointer.indexOf(itemClassPointer), 1);
-			deletePointer.remove();
+			delElemPointer.remove();
 
 			if(loadSetPointer.length == 1)
 				loadSetPointer[0].row.del.style.opacity = "0.25";
@@ -234,8 +237,6 @@ class ProductCard extends Card
 		TotalUp(1);
 
 		this.UpdateCost();
-
-		invoiceBttn.style.opacity = "1";
 		this.items[0].row.del.style.opacity = "0.25";
 	};
 
@@ -410,7 +411,8 @@ function AddCard()
 	let newProduct = new ProductCard(productDropdown.names[productDropdown.value], 1);
 	productCardStack.appendChild(newProduct.selfElement);
 	productMenu.products.push(newProduct);
-	
+
+	CheckDownloadability();
 	TotalUp(0);
 }
 function AddItem()
@@ -423,6 +425,13 @@ function AddItem()
 
 	TotalUp(1);
 }
+function CheckDownloadability()
+{
+	if(aliasInput.value != "" && productMenu.products.length > 0)
+		invoiceBttn.style.opacity = "1";
+	else
+		invoiceBttn.style.opacity = "0.25";
+}
 
 TotalUp(0);
 
@@ -430,74 +439,119 @@ function PrintInvoice()
 {
 	if(productMenu.products.length == 0)
 		return;
-	
-	let invoice = document.getElementById("print");
 
-	if(invoice.children.length > 0)
-		for (let index = invoice.children.length - 1; index >= 0; index--) {
-			const element = invoice.children[index];
-			invoice.removeChild(element);
+	let requestDetails = document.getElementById("requestDetails");
+	let ID = document.getElementById("requestID");
+	let customerName = document.getElementById("customerName");
+	let Time = new Date();
+
+	let idNumber = (Time.getTime() / 1000).toFixed(0);
+
+	ID.textContent = `ID: ${idNumber}`;
+	customerName.textContent = aliasInput.value;
+
+	if(requestDetails.children.length > 0)
+		for (let c = requestDetails.children.length - 1; c >= 0; c--) {
+			const element = requestDetails.children[c];
+			element.remove();
 		}
-	
-	let title = document.createElement('h1');
-	title.innerHTML =
-	`
-		AXEL COMMISSIONS - INVOICE
-		<br><small style="font-size: 14px; font-weight: 400;">Disclaimer: This is NOT a final invoice, just an estimate!</small>
-	`;
-
-	invoice.appendChild(title);
-	invoice.appendChild(document.createElement('hr'));
 
 	for (let i = 0; i < productMenu.products.length; i++) {
 		const product = productMenu.products[i];
-		let productName = document.createElement('h2');
-		let information = document.createElement('p');
+
+		let productEntry = document.createElement('div');
+		productEntry.classList.add("productEntry");
+
+		let setTable = document.createElement('div');
+		let titelRow = document.createElement('div');
+
+		let setRow = document.createElement('div');
+		setRow.classList.add("setRow");
+
+		let setIcon = document.createElement('div');
+		setIcon.classList.add("setIcon");
 		
-		productName.style.marginBottom = "4px";
-		information.style.margin = "0px";
-		
-		productName.textContent = product.prodName;
-		information.innerHTML = 
+		switch(product.prodName)
+		{
+			case "STICKER SET":
+				setIcon.style.backgroundImage = "url('./Graphics/icons/sticker_blk.png')";
+			break;
+			case "EMOJI SET":
+				setIcon.style.backgroundImage = "url('./Graphics/icons/emoji_blk.png')";
+			break;
+			case "CHARACTER ART":
+				setIcon.style.backgroundImage = "url('./Graphics/icons/char_art_blk.png')";
+			break;
+		}
+
+		setRow.appendChild(setIcon);
+		setRow.innerHTML +=
 		`
-			<b>Name:</b> ${product.manualName.value}
-			<br><b>Description:</b> ${product.description.value}
-			<br><b>Cost:</b> $${product.cost}
+			<p class="setInfo">
+				<b>${product.prodName} - ${product.manualName.value}</b>
+				<br>${product.description.value}
+			</p>
+		`;
+
+		setTable.appendChild(setRow);
+
+		titelRow.innerHTML +=
+		`
+			<p>#</p>
+			<p>DESCRIPTION</p>
+			<p>STYLE</p>
+			<p>PRICE</p>
 		`;
 		
-		invoice.appendChild(productName);
-		invoice.appendChild(information);
+		setTable.classList.add("setTable");
+		titelRow.classList.add("titleRow");
+
+		productEntry.appendChild(setTable);
+		productEntry.appendChild(titelRow);
 		
 		for (let t = 0; t < product.items.length; t++) {
 			const item = product.items[t];
 			
-			let itemNumber = document.createElement('h3');
-			itemNumber.innerText = `Item #${t + 1}`;
-			itemNumber.style.marginLeft = "16px";
-			itemNumber.style.marginBottom = "4px";
-
-			let itemInfo = document.createElement('p');
-			itemInfo.style.margin = "0px 16px";
-			
-			itemInfo.innerHTML =
+			let informationRow = document.createElement('div');
+			informationRow.innerHTML +=
 			`
-				<b>Item Description:</b> ${item.description.value}
-				<br><b>Item Style:</b>${item.info.innerHTML}
-				<br><br><b>Item Cost:</b> $${item.cost}
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
 			`;
 
-			invoice.appendChild(itemNumber);
-			invoice.appendChild(itemInfo);
+			informationRow.classList.add("informationRow");
+			let pS = informationRow.getElementsByTagName('p');
+
+			pS[0].textContent = t + 1;
+			pS[1].textContent = item.description.value;
+			pS[2].innerHTML = item.info.innerHTML;
+			pS[3].textContent = `${item.cost.toFixed(2)}`;
+
+			productEntry.appendChild(informationRow);
 		}
-		
+
+		let setTotal = document.createElement('p');
+		setTotal.classList.add("setTotal");
+		setTotal.textContent = `PRODUCT TOTAL: $${product.cost.toFixed(2)}`;
+
+		productEntry.appendChild(setTotal);
+		requestDetails.appendChild(productEntry);
 	}
 
-	invoice.appendChild(document.createElement('hr'));
+	let totalPrice = document.getElementById("invoiceTotal");
+	totalPrice.innerHTML = `TOTAL ESTIMATE: $${total.toFixed(2)}`;
 
-	let totalPrice = document.createElement('h2');
-	totalPrice.textContent = `TOTAL ESTIMATE: $${total.toFixed(2)}`;
+	let stamps = document.getElementById("timestamp");
+	stamps.textContent = Time;
 
-	invoice.appendChild(totalPrice);
+	let clone = document.getElementById("print");
+	
+	let pdfOptions = {
+		filename: `commission_request_${idNumber}.pdf`,
+		html2canvas : { scale: 1 }
+	};
 
-	print();
+	html2pdf().set(pdfOptions).from(clone.innerHTML).save();
 }

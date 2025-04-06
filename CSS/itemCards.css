@@ -169,6 +169,17 @@ textarea, input[type="text"]:focus {
 	outline: none;
 }
 
+#invoiceDownload {
+	display: grid;
+	grid-template-columns: 1fr auto;
+
+	gap: 4px;
+}
+#alias {
+	background: #594000;
+	border-radius: 4px;
+}
+
 .manualProductName {
 	height: 32px;
 }
@@ -252,12 +263,14 @@ textarea, input[type="text"]:focus {
 }
 #invoiceButton {
 	background-image: url('../Graphics/icons/download.png');
-	background-position: 4px;
+	background-position: 8px;
 
 	font-size: 21px;
 	color: black;
 
 	background-color: #ffcc4a;
+
+	min-width: 256px;
 }
 #updateSet, #updateItem {
 	font-size: 21px;
@@ -265,7 +278,11 @@ textarea, input[type="text"]:focus {
 	background-color: #00ffa3;
 }
 
-@media (max-width: 550px) {
+@media (max-width: 750px) {
+	#invoiceDownload {
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr 1fr;
+	}
 	.saveControlRow {
 		grid-template-columns: 1fr;
 		grid-template-rows: auto auto;

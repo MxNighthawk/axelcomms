@@ -5,79 +5,131 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Commission Calculator</title>
 
-		<link href="./CSS/base.css?version=1.0.1" type="text/css" rel="stylesheet"></link>
-		<link href="./CSS/itemCards.css?version=1.0.0" type="text/css" rel="stylesheet"></link>
+		<link href="./CSS/base.css?version=1.1.0" type="text/css" rel="stylesheet"></link>
+		<link href="./CSS/itemCards.css?version=1.1.0" type="text/css" rel="stylesheet"></link>
+		<link href="./CSS/invoice.css?version=1.0.0" type="text/css" rel="stylesheet"></link>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+				integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+				crossorigin="anonymous"
+				referrerpolicy="no-referrer"></script>
 	</head>
 
 	<body>
-		<div id="estimatorBoundary">
-			<h1 id="modeTitle">Commission Estimator</h1>
+		<div id="calculator">
+			<div id="estimatorBoundary">
+				<h1 id="modeTitle">Commission Estimator</h1>
 
-			<div id="estimatorViewport">
-				<div class="contextMenu" id="productMenu">
-					<div class="cards">
-						
-					</div>
+				<div id="estimatorViewport">
+					<div class="contextMenu" id="productMenu">
+						<div class="cards">
+							
+						</div>
 
-					<div class="addCard">
-						<div class="fieldGrid">
-							<a class="addButton" href="javascript:AddCard();">
-								+
-							</a>
-							<h2 class="addPrompt">ADD ANOTHER ITEM</h2>
+						<div class="addCard">
+							<div class="fieldGrid">
+								<a class="addButton" href="javascript:AddCard();">
+									+
+								</a>
+								<h2 class="addPrompt">ADD ANOTHER ITEM</h2>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="contextMenu" id="setMenu">
-					<div class="cards">
+					<div class="contextMenu" id="setMenu">
+						<div class="cards">
 
-					</div>
+						</div>
 
-					<div class="addCard">
-						<div class="fieldGrid">
-							<a class="addButton" href="javascript:AddItem();">
-								+
-							</a>
-							<h2 class="addPrompt" style="text-align: center;">ADD ANOTHER ITEM</h2>
+						<div class="addCard">
+							<div class="fieldGrid">
+								<a class="addButton" href="javascript:AddItem();">
+									+
+								</a>
+								<h2 class="addPrompt" style="text-align: center;">ADD ANOTHER ITEM</h2>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="contextMenu" id="itemEditor">
-					<div class="editorCard">
-						<div class="graphicPreview">
-						</div>
-						<div class="controlTable">
-							<div class="slider">
-								<p class="sliderName">Animation Length</p>
-								<input type="range" min="0" max="3" step="0.1" value="0">
-								<p class="sliderValue">3s</p>
+					<div class="contextMenu" id="itemEditor">
+						<div class="editorCard">
+							<div class="graphicPreview">
+							</div>
+							<div class="controlTable">
+								<div class="slider">
+									<p class="sliderName">Animation Length</p>
+									<input type="range" min="0" max="3" step="0.1" value="0">
+									<p class="sliderValue">3s</p>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+
+				<div class="saveControlRow" id="productControl">
+					<p class="grandTotal">TOTAL &middot; $</p>
+					<div id="invoiceDownload">
+						<input id="alias" type="text" placeholder="Your (user)name - REQUIRED">
+						<a href="javascript:PrintInvoice();" id="invoiceButton">GET INVOICE</a>
+					</div>
+				</div>
+				<div class="saveControlRow" id="setControl">
+					<p class="grandTotal">SET COST &middot; $</p>
+					<a href="javascript:DisplaySetCards(false);SetFocusedMenu(0);productClassPionter.UpdateCost();TotalUp(0);" id="updateSet">UPDATE SET</a>
+				</div>
+				<div class="saveControlRow" id="itemControl">
+					<p class="grandTotal">ITEM COST &middot; $</p>
+					<a href="javascript:SetFocusedMenu(1);itemClassPointer.UpdateCost(total);TotalUp(1);" id="updateItem">UPDATE ITEM</a>
+				</div>
 			</div>
 
-			<div class="saveControlRow" id="productControl">
-				<p class="grandTotal">TOTAL &middot; $</p>
-				<a href="javascript:PrintInvoice();" id="invoiceButton">GET INVOICE</a>
+			<a href="https://x.com/NighthawkDev" target="_blank" id="credits">
+				Created by: Jesus Barajas / NighthawkDev
+				<br><small>Calculator v1.1.0, 04/06/2025, 4:26 PM CST</small>
+			</a>
+		</div>
+		
+		<div id="print">
+			<div id="invoiceHeader">
+				<h1>REQUEST INVOICE</h1>
+				<div style="display: flex; justify-content: space-between;">
+					<h3>Axel's Commissions</h3>
+					<h3 id="requestID"></h3>
+				</div>
 			</div>
-			<div class="saveControlRow" id="setControl">
-				<p class="grandTotal">SET COST &middot; $</p>
-				<a href="javascript:DisplaySetCards(false);SetFocusedMenu(0);productClassPionter.UpdateCost();TotalUp(0);" id="updateSet">UPDATE SET</a>
+
+			<div id="invoiceInformation">
+				<h2>CUSTOMER INFO</h2>
+				
+				<div id="invoiceAlias">
+					<p><b>Alias:</b></p>
+					<p id="customerName">Axel Vance</p>
+				</div>
+				<br>
+
+				<h2>REQUEST DETAILS</h2>
+				<div id="requestDetails">
+				</div>
+
+				<h3 id="invoiceTotal">
+					TOTAL ESTIMATE: $999.99
+				</h3>
 			</div>
-			<div class="saveControlRow" id="itemControl">
-				<p class="grandTotal">ITEM COST &middot; $</p>
-				<a href="javascript:SetFocusedMenu(1);itemClassPointer.UpdateCost(total);TotalUp(1);" id="updateItem">UPDATE ITEM</a>
+
+			<div id="invoiceFooter">
+				<img src="./Graphics/logo.png">
+				<div id="invoiceConcerns">
+					<p>
+						Questions? Contact me on <a target="_blank" href="https://discord.gg/CG2mseUDT4">Discord</a> or <a target="_blank" href="https://t.me/axelorca">Telegram</a>!
+						<br>Thank you for your commission!
+					</p>
+				</div>
+				<div id="printInfo">
+					<p><b>PRINTED:</b></p>
+					<p id="timestamp">Timestamp</p>
+				</div>
 			</div>
 		</div>
-
-		<a href="https://x.com/NighthawkDev" target="_blank" id="credits">
-			Created by: Jesus Barajas / NighthawkDev
-			<br><small>Calculator v1.0.0, 04/05/2025, 10:24 PM CST</small>
-		</a>
-		<div id="print"></div>
 	</body>
 
 	<script src="./JS/inputUI.js?version=1.0.0"></script>
-	<script src="./JS/calculator.js?version=1.0.0"></script>
+	<script src="./JS/calculator.js?version=1.1.0"></script>
 </html>
