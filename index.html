@@ -5,9 +5,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Commission Calculator</title>
 
-		<link href="./CSS/base.css?version=1.1.0" type="text/css" rel="stylesheet"></link>
+		<link href="./CSS/base.css?version=1.1.01" type="text/css" rel="stylesheet"></link>
 		<link href="./CSS/itemCards.css?version=1.1.0" type="text/css" rel="stylesheet"></link>
-		<link href="./CSS/invoice.css?version=1.0.0" type="text/css" rel="stylesheet"></link>
+		<link href="./CSS/invoice.css?version=1.0.01" type="text/css" rel="stylesheet"></link>
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
 				integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
@@ -83,14 +83,14 @@
 
 			<a href="https://x.com/NighthawkDev" target="_blank" id="credits">
 				Created by: Jesus Barajas / NighthawkDev
-				<br><small>Calculator v1.1.01, 04/06/2025, 4:35 PM CST</small>
+				<br><small>Calculator v1.1.02, 04/07/2025, 7:40 AM CST</small>
 			</a>
 		</div>
 		
 		<div id="print">
 			<div id="invoiceHeader">
 				<h1>REQUEST INVOICE</h1>
-				<div style="display: flex; justify-content: space-between;">
+				<div id="headerSubtitle">
 					<h3>Axel's Commissions</h3>
 					<h3 id="requestID"></h3>
 				</div>
@@ -101,17 +101,24 @@
 				
 				<div id="invoiceAlias">
 					<p><b>Alias:</b></p>
-					<p id="customerName">Axel Vance</p>
+					<p id="customerName"></p>
 				</div>
 				<br>
 
 				<h2>REQUEST DETAILS</h2>
 				<div id="requestDetails">
 				</div>
+				
+				<div id="requestTotal">
+					<h2 id="totalTitle">ESTIMATED TOTAL</h2>
+					<h2 id="invoiceTotal">$999.99</h2>
+				</div>
+				<br>
 
-				<h3 id="invoiceTotal">
-					TOTAL ESTIMATE: $999.99
-				</h3>
+				<h2>DISCLAIMER</h2>
+				<p class="disclaimerPoint">1. The total price is an <b>ESTIMATION!</b> The final price may increase / decrease depending on commission detail.</li>
+				<p class="disclaimerPoint">2. I <b>DO NOT</b> accpet problematic requests, including, but not limited to: NSFW, Politics, Hate Speech, etc.</li>
+				<p class="disclaimerPoint">3. Full payment is <b>REQUIRED</b> once your commission request is approved.</li>
 			</div>
 
 			<div id="invoiceFooter">

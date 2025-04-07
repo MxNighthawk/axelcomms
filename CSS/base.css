@@ -12,17 +12,18 @@
 	src: url("../Font/Alata-Regular.ttf") format('truetype');
 }
 
-hr {
-	border: solid 2px black;
-}
 body {
 	margin: 0px;
 	padding: 0px;
 
 	overflow-x: hidden;
 }
+hr {
+	border: solid 2px black;
+}
+
 #calculator {
-	background-color: #08211c;
+	background-color: #011c16;
 
 	width: 100vw;
 	height: 100vh;
@@ -36,11 +37,6 @@ body {
 	flex-direction: column;
 }
 #credits {
-	/* background-color: var(--frameColor);
-	outline: solid 4px var(--frameOutline);
-	border: solid 1px var(--frameColor);
-	border-radius: 4px; */
-	
 	letter-spacing: 0.5px;
 	text-align: center;
 

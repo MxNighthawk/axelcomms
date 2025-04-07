@@ -2,6 +2,38 @@
 	display: none;
 }
 
+.setTotal, #requestTotal {
+	background: #ffcc4a;
+	border-top: solid black 2px;
+	border-bottom: solid black 2px;
+
+	text-align: right;
+	font-weight: bold;
+	color: #765400;
+
+	padding: 8px;
+}
+#requestTotal, #headerSubtitle {
+	display: flex;
+	justify-content: space-between;
+}
+#totalTitle {
+	background-image: url('../Graphics/icons/money_total.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: left;
+	
+	padding-left: 48px;
+}
+#invoiceTotal {
+	margin: 0px;
+}
+
+.disclaimerPoint {
+	font-size: 16px;
+	margin: 8px 16px;
+}
+
 #invoiceHeader {
 	background: #007a4e;
 	color: #00ffa3;
@@ -111,6 +143,11 @@
 	padding: 8px;
 	padding-left: 0px;
 	margin: 0px;
+
+	color: #765400;
+}
+.setInfo b {
+	color: black;
 }
 
 .titleRow, .informationRow {
@@ -145,18 +182,4 @@
 }
 .productEntry .informationRow:nth-child(even) p:last-child {
 	background: #fff2cc;
-}
-
-.setTotal, #invoiceTotal {
-	background: #ffcc4a;
-	border-top: solid black 2px;
-	border-bottom: solid black 2px;
-
-	text-align: right;
-	font-weight: bold;
-
-	margin: 0px;
-	margin-bottom: 4px;
-
-	padding: 8px;
 }
