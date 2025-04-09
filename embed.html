@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Commission Calculator</title>
+
+		<style>
+			* {
+				font-family: 'Alata';
+			}
+		
+			:root {
+				--frameColor: #765400;
+				--frameOutline: #ffcc4a;
+			}
+		
+			@font-face {
+				font-family: 'Alata';
+				src: url("Font/Alata-Regular.ttf") format('truetype');
+			}
+		
+			body {
+				margin: 0px;
+				padding: 0px;
+		
+				overflow-x: hidden;
+			}
+			hr {
+				border: solid 2px black;
+			}
+		
+			#calculator {
+				background-color: #011c16;
+		
+				width: 100vw;
+				height: 100vh;
+		
+				margin: 0px;
+				padding: 0px;
+		
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+			}
+			#credits {
+				letter-spacing: 0.5px;
+				text-align: center;
+		
+				color: var(--frameOutline);
+				margin: 0px;
+				margin-top: 16px;
+				padding: 4px 8px;
+		
+				width: calc(100% - 32px);
+			}
+		
+			#modeTitle {
+				text-transform: uppercase;
+				color: var(--frameOutline);
+				letter-spacing: 1px;
+		
+				text-align: center;
+		
+				margin: 0px;
+				margin-bottom: 8px;
+			}
+		
+			#estimatorBoundary {
+				background-color: var(--frameColor);
+				outline: solid 4px var(--frameOutline);
+				border: solid 1px var(--frameColor);
+				border-radius: 4px;
+		
+				display: grid;
+				grid-template-rows: min-content 1fr min-content;
+				padding: 8px;
+				
+				width: 100%;
+				height: 100%;
+				
+				max-width: calc(100% - 32px);
+				max-height: calc(100% - 102px);
+			}
+			#estimatorViewport {
+				background-color: black;
+				border-radius: 8px;
+				padding: 8px;
+		
+				max-height: 80vh;
+		
+				overflow: hidden;
+			}
+		
+			* ::-webkit-scrollbar {
+				width: 10px;
+				background-color: #002f25;
+				border-radius: 4px;
+			}
+			* ::-webkit-scrollbar-thumb {
+				background: #00ffa3;
+				width: 10px;
+				border-radius: 4px;
+			}
+		
+			.contextMenu{
+				display: block;
+				overflow-y: scroll;
+				
+				height: 100%;
+			}
+		
+			.slider{
+				display: grid;
+				color: white;
+		
+				background-color: #08211c;
+				outline: dashed 2px #007a4e;
+				border-radius: 4px;
+				
+				align-items: center;
+				gap: 0px 8px;
+				
+				grid-template-columns: auto 1fr 32px;
+				padding: 8px;
+			}
+			.slider .sliderName, .slider .sliderValue {
+				text-align: center;
+				
+				margin: 0px;
+				padding: 0px;
+			}
+			.slider input {
+				appearance: none;
+				position: relative;
+		
+				background: #004233;
+		
+				height: 12px;
+				padding: 0px;
+				margin: 0px 4px;
+			}
+			.slider input::-webkit-slider-thumb {
+				appearance: none;
+				
+				background: #00ffa3;
+				outline: dashed 2px #007a4e;
+				transform: rotateZ(45deg);
+				
+				height: 16px;
+				width: 16px;
+			}
+		
+			.select {
+				user-select: none;
+				background-color: #00221B;
+				color: white;
+		
+				font-size: 18px;
+				letter-spacing: 0.5px;
+				line-height: 18px;
+		
+				outline: dashed 2px #007a4e;
+				border: none;
+				border-radius: 4px;
+		
+				position: relative;
+			}
+			.selectedName {
+				position: relative;
+				cursor: pointer;
+			}
+			.selectedName::after {
+				content: ".";
+				display: inline-block;
+		
+				clip-path: polygon(00% 0%, 50% 100%, 100% 0%);
+				
+				background: #007a4e;
+				color: transparent;
+		
+				height: 12px;
+				width: 12px;
+		
+				position: absolute;
+				right: 8px;
+				top: 12px;
+			}
+			.selectList {
+				display: none;
+		
+				background-color: #002f25;
+				outline: dashed 2px #007a4e;
+				border-radius: 4px;
+		
+				position: absolute;
+				z-index: 1;
+		
+				right: 0px;
+				left: 0px;
+			}
+		
+			.option, .selectedName {
+				background-repeat: no-repeat;
+				background-size: 16px;
+				background-position: 6px;
+		
+				letter-spacing: 0.5px;
+		
+				padding: 8px;
+				padding-left: 32px;
+		
+				margin: 0px;
+			}
+			.option:hover {
+				background-color: #007a4e;
+			}
+		
+			#setMenu, #itemEditor, #setControl, #itemControl {
+				display: none;
+			}
+		
+			#print {
+			display: none;
+			}
+		
+			.setTotal, #requestTotal {
+				background: #ffcc4a;
+				border-top: solid black 2px;
+				border-bottom: solid black 2px;
+		
+				text-align: right;
+				font-weight: bold;
+				color: #765400;
+		
+				padding: 8px;
+			}
+			#requestTotal, #headerSubtitle {
+				display: flex;
+				justify-content: space-between;
+			}
+			#totalTitle {
+				background-image: url('Graphics/icons/money_total.png');
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: left;
+				
+				padding-left: 48px;
+			}
+			#invoiceTotal {
+				margin: 0px;
+			}
+		
+			.disclaimerPoint {
+				font-size: 14px;
+				margin: 8px 16px;
+			}
+		
+			#invoiceHeader {
+				background: #007a4e;
+				color: #00ffa3;
+		
+				padding: 16px;
+			}
+			#invoiceHeader h1, #invoiceHeader h3 {
+				letter-spacing: 1px;
+		
+				margin: 0px;
+			}
+		
+			#invoiceFooter {
+				background: #007a4e;
+				color: white;
+		
+				display: grid;
+				grid-template-columns: min-content auto;
+				gap: 0px 16px;
+		
+				align-items: center;
+			}
+			#invoiceFooter img {
+				max-width: 256px;
+				padding: 16px;
+			}
+			#invoiceFooter p a {
+				color: #00ffa3;
+			}
+		
+			#invoiceConcerns {	
+				background: #002f25;
+				height: 100%;
+		
+				display: flex;
+				align-items: center;
+				
+				margin: 0px;
+				padding: 0px;
+			}
+			#invoiceConcerns p {
+				letter-spacing: 0.5px;
+		
+				margin: 0px;
+				padding-left: 16px;
+			}
+		
+			#printInfo {
+				display: grid;
+				grid-template-columns: min-content auto;
+				color: black;
+		
+				background: #bfbfbf;
+				grid-column: 1 / 3;
+		
+				padding: 4px 8px;
+			}
+			#printInfo p {
+				margin: 0px;
+				padding: 0px;
+			}
+			#timestamp {
+				text-align: center;
+			}
+		
+			#invoiceInformation {
+				padding: 16px;
+			}
+			#invoiceInformation h2 {
+				letter-spacing: 0.5px;
+				margin: 0px;
+			}
+		
+			#invoiceAlias {
+				background: #f2f2f2;
+		
+				display: grid;
+				grid-template-columns: min-content 1fr;
+				gap: 8px;
+				
+				padding: 8px;
+			}
+			#invoiceAlias p {
+				text-align: right;
+				margin: 0px;
+			}
+		
+			.setRow {
+				background: #ffcc4a;
+				border-top: solid black 2px;
+				border-bottom: solid black 2px;
+		
+				display: grid;
+				grid-template-columns: 32px auto;
+				
+				min-height: 80px;
+			}
+			.setIcon {
+				width: 32px;
+				
+				background-image: url('Graphics/icons/sticker_blk.png');
+				background-size: 16px;
+				background-position: center 12px;
+				background-repeat: no-repeat;
+			}
+			.setInfo {
+				padding: 8px;
+				padding-left: 0px;
+				margin: 0px;
+		
+				color: #765400;
+			}
+			.setInfo b {
+				color: black;
+			}
+		
+			.titleRow, .informationRow {
+				display: grid;
+				grid-template-columns: 32px 1fr 0.5fr 0.5fr;
+			}
+			.titleRow {
+				border-bottom: solid black 2px;
+			}
+			.titleRow p {
+				margin: 4px 0px;
+				padding: 4px 8px;
+		
+				font-weight: bold;
+			}
+		
+			.productEntry .informationRow {
+				background: #cccccc;
+			}
+			.productEntry .informationRow:nth-child(even) {
+				background: #fff;
+			}
+		
+			.informationRow p {
+				margin: 0px;
+				padding: 4px 8px;
+		
+				font-size: 14px;
+			}
+			.informationRow p:last-child {
+				background: #ffcc4a;
+			}
+			.productEntry .informationRow:nth-child(even) p:last-child {
+				background: #fff2cc;
+			}
+		
+			a {
+			-webkit-user-drag: none;
+			user-select: none;
+			}
+		
+			.fieldGrid {
+				display: grid;
+				gap: 4px;
+		
+				grid-template-columns: 144px 1fr;
+				grid-template-rows: min-content 1.5fr;
+			}
+			.addCard .fieldGrid {
+				grid-template-columns: 74px 1fr;
+			}
+		
+			.addCard, .productCard, .itemCard, .editorCard {
+				padding: 4px;
+				border-radius: 4px;
+		
+				height: max-content;
+				margin: auto;
+			}
+			.addCard {
+				color: #00ffa3;
+				background-color: #002f25;
+				outline: dashed 4px #007a4e;
+				
+				width: calc(100% - 48px);
+		
+				padding: 16px;
+				margin: 4px 0px;
+				margin-left: 4px;
+			}
+			.addButton {
+				background-color: #007a4e;
+				font-size: 64px;
+				line-height: 52px;
+		
+				color: #00ffa3;
+		
+				text-decoration: none;
+				text-align: center;
+		
+				aspect-ratio: 1 / 1;
+				grid-row: 1 / 3;
+		
+				width: 64px;
+				clip-path: circle();
+			}
+			.addPrompt {
+				font-style: italic;
+				letter-spacing: 1px;
+				margin: 0px;
+			}
+			.productCard:last-child, .itemCard:last-child {
+				margin-bottom: 12px;
+			}
+		
+			#setMenu .addButton {
+				grid-row: auto;
+			}
+			#setMenu .addCard .fieldGrid {
+				grid-template-rows: unset;
+				align-items: center;
+			}
+		
+			.productCard, .editorCard, .itemCard {
+				background-color: #007a4e;
+		
+				width: calc(100% - 16px);
+		
+				margin-bottom: 8px;
+				margin-left: 0px;
+			}
+			.styleInfo {
+				background-image: url('Graphics/icons/info.png');
+				background-size: 24px;
+		
+				background-repeat: no-repeat;
+				background-position: left;
+		
+				color: white;
+				text-transform: uppercase;
+		
+				margin: 0px;
+				padding: 6px;
+				padding-top: 4px;
+				padding-left: 26px;
+			}
+		
+			.graphicPreview, .manualProductName, .manualProductDesc {
+				background-color: #002f25;
+				border-radius: 4px;
+			}
+			.graphicPreview {
+				grid-row: 1 / 3;
+				position: relative;
+		
+				background-image: url("");
+				background-position: center calc(50% - 10px);
+				background-repeat: no-repeat;
+				background-size: 112px;
+			}
+			.itemCard .graphicPreview {
+				background-size: 128px;
+			}
+			.editorCard .graphicPreview, .itemCard .graphicPreview{
+				background-position: center;
+			}
+			.editorCard .graphicPreview {
+				background-size: contain;
+				height: 50vh;
+			}
+			.editorCard {
+				display: grid;
+				gap: 4px;
+		
+				margin-bottom: 0px;
+			}
+			.controlTable {
+				background-color: black;
+				padding: 8px;
+		
+				border-radius: 4px;
+				min-height: calc(25vh - 8px);
+		
+				display: grid;
+				grid-template-rows: repeat(4, min-content);
+				gap: 8px;
+			}
+		
+			.productName {
+				text-transform: uppercase;
+				text-align: center;
+		
+				font-weight: bold;
+				color: white;
+				letter-spacing: 1px;
+		
+				position: absolute;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+		
+				margin: 0px auto;
+				padding: 4px;
+			}
+		
+			textarea {
+				min-height: 102px;
+				max-height: 256px;
+				padding: 8px;
+				resize: vertical;
+			}
+			textarea, input {
+				font-size: 16px;
+				
+				border: none;
+				color: white;
+		
+				padding-left: 8px;
+			}
+			input::placeholder, textarea::placeholder, input[type="text"]::placeholder {
+				font-weight: bold;
+				font-style: italic;
+			}
+			textarea, input[type="text"]:focus {
+				outline: none;
+			}
+		
+			#invoiceDownload {
+				display: grid;
+				grid-template-columns: 1fr auto;
+		
+				gap: 4px;
+			}
+			#alias {
+				background: #594000;
+				border-radius: 4px;
+			}
+		
+			.manualProductName {
+				height: 32px;
+			}
+		
+			.saveControlRow, .controlRow {
+				font-weight: bold;
+		
+				display: grid;
+				gap: 4px;
+			}
+			.controlRow {
+				font-size: 18px;
+				margin-top: 4px;
+		
+				grid-template-columns: 144px 1fr 32px;
+			}
+			.saveControlRow {
+				margin-top: 8px;
+				grid-template-columns: auto 1fr;
+			}
+		
+			.total, .grandTotal {
+				background-image: url('Graphics/icons/money.png');
+				background-size: 24px;
+		
+				background-repeat: no-repeat;
+				background-position: left;
+		
+				color: #ffcc4a;
+				letter-spacing: 1px;
+		
+				margin: 0px;
+				padding-left: 48px;
+			}
+			.total {
+				background-position: 8px;
+		
+				font-size: 21px;
+				text-align: center;
+		
+				line-height: 32px;
+		
+				padding-left: 32px;
+			}
+			.grandTotal {
+				font-size: 24px;
+				margin-right: 8px;
+		
+				padding-left: 32px;
+			}
+		
+			.editButton, .deleteButton, #invoiceButton, #updateSet, #updateItem {
+				background-size: 24px;
+				background-repeat: no-repeat;
+		
+				text-decoration: none;
+				border-radius: 4px;
+				
+				display: block;
+				padding: 4px;
+				
+				margin: 0px;
+				flex: 1;
+		
+				text-align: center;
+				cursor: pointer;
+			}
+			.editButton {
+				background-image: url('Graphics/icons/wrench.png');
+				background-position: 4px;
+		
+				color: black;
+				background-color: #00ffa3;
+			}
+			.deleteButton {
+				background-image: url('Graphics/icons/delete.png');
+				background-position: center;
+		
+				color: white;
+				background-color: #fd2bcb;
+			}
+			#invoiceButton {
+				background-image: url('Graphics/icons/download.png');
+				background-position: 8px;
+		
+				font-size: 21px;
+				color: black;
+		
+				background-color: #ffcc4a;
+		
+				min-width: 256px;
+			}
+			#updateSet, #updateItem {
+				font-size: 21px;
+				color: black;
+				background-color: #00ffa3;
+			}
+		
+			@media (max-width: 750px) {
+				#invoiceDownload {
+					grid-template-columns: 1fr;
+					grid-template-rows: 1fr 1fr;
+				}
+				.saveControlRow {
+					grid-template-columns: 1fr;
+					grid-template-rows: auto auto;
+				}
+				.controlRow {
+					grid-template-columns: 1fr;
+					grid-template-rows: max-content max-content 32px;
+				}
+				.grandTotal {
+					text-align: center;
+				}
+				.fieldGrid:not(.addCard .fieldGrid) {
+					grid-template-columns: 1fr;
+					grid-template-rows: 144px min-content 1.5fr;
+				}
+			}
+		
+		</style>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+				integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+				crossorigin="anonymous"
+				referrerpolicy="no-referrer"></script>
+	</head>
+
+	<body>
+		<div id="calculator">
+			<div id="estimatorBoundary">
+				<h1 id="modeTitle">Commission Estimator</h1>
+
+				<div id="estimatorViewport">
+					<div class="contextMenu" id="productMenu">
+						<div class="cards">
+							
+						</div>
+
+						<div class="addCard">
+							<div class="fieldGrid">
+								<a class="addButton" href="javascript:AddCard();">
+									+
+								</a>
+								<h2 class="addPrompt">ADD ANOTHER ITEM</h2>
+							</div>
+						</div>
+					</div>
+					<div class="contextMenu" id="setMenu">
+						<div class="cards">
+
+						</div>
+
+						<div class="addCard">
+							<div class="fieldGrid">
+								<a class="addButton" href="javascript:AddItem();">
+									+
+								</a>
+								<h2 class="addPrompt" style="text-align: center;">ADD ANOTHER ITEM</h2>
+							</div>
+						</div>
+					</div>
+					<div class="contextMenu" id="itemEditor">
+						<div class="editorCard">
+							<div class="graphicPreview">
+							</div>
+							<div class="controlTable">
+								<div class="slider">
+									<p class="sliderName">Animation Length</p>
+									<input type="range" min="0" max="3" step="0.1" value="0">
+									<p class="sliderValue">3s</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="saveControlRow" id="productControl">
+					<p class="grandTotal">TOTAL &middot; $</p>
+					<div id="invoiceDownload">
+						<input id="alias" type="text" autocomplete="off" placeholder="Your (user)name - REQUIRED">
+						<a href="javascript:PrintInvoice();" id="invoiceButton">GET INVOICE</a>
+					</div>
+				</div>
+				<div class="saveControlRow" id="setControl">
+					<p class="grandTotal">SET COST &middot; $</p>
+					<a href="javascript:DisplaySetCards(false);SetFocusedMenu(0);productClassPionter.UpdateCost();TotalUp(0);" id="updateSet">UPDATE SET</a>
+				</div>
+				<div class="saveControlRow" id="itemControl">
+					<p class="grandTotal">ITEM COST &middot; $</p>
+					<a href="javascript:SetFocusedMenu(1);itemClassPointer.UpdateCost(total);TotalUp(1);" id="updateItem">UPDATE ITEM</a>
+				</div>
+			</div>
+
+			<a href="https://x.com/NighthawkDev" target="_blank" id="credits">
+				Created by: Jesus Barajas / NighthawkDev
+				<br><small>Calculator v1.1.03, 04/07/2025, 7:42 AM CST</small>
+			</a>
+		</div>
+		
+		<div id="print">
+			<div id="invoiceHeader">
+				<h1>REQUEST INVOICE</h1>
+				<div id="headerSubtitle">
+					<h3>Axel's Commissions</h3>
+					<h3 id="requestID"></h3>
+				</div>
+			</div>
+
+			<div id="invoiceInformation">
+				<h2>CUSTOMER INFO</h2>
+				
+				<div id="invoiceAlias">
+					<p><b>Alias:</b></p>
+					<p id="customerName"></p>
+				</div>
+				<br>
+
+				<h2>REQUEST DETAILS</h2>
+				<div id="requestDetails">
+				</div>
+				
+				<div id="requestTotal">
+					<h2 id="totalTitle">ESTIMATED TOTAL</h2>
+					<h2 id="invoiceTotal">$999.99</h2>
+				</div>
+				<br>
+
+				<h2>DISCLAIMER</h2>
+				<p class="disclaimerPoint">1. The total price is an <b>ESTIMATION!</b> The final price may increase / decrease depending on commission detail.</li>
+				<p class="disclaimerPoint">2. I <b>DO NOT</b> accpet problematic requests, including, but not limited to: NSFW, Politics, Hate Speech, etc.</li>
+				<p class="disclaimerPoint">3. Full payment is <b>REQUIRED</b> once your commission request is approved.</li>
+			</div>
+
+			<div id="invoiceFooter">
+				<img src="./Graphics/logo.png">
+				<div id="invoiceConcerns">
+					<p>
+						Questions? Contact me on <a target="_blank" href="https://discord.gg/CG2mseUDT4">Discord</a> or <a target="_blank" href="https://t.me/axelorca">Telegram</a>!
+						<br>Thank you for your commission!
+					</p>
+				</div>
+				<div id="printInfo">
+					<p><b>PRINTED:</b></p>
+					<p id="timestamp">Timestamp</p>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script>
+		/*
+			Copyright MxNighthawk 2025. All Rights Reserved.
+			Programmed by Jesus Barajas Torres / MxNighthawk.
+		*/
+		
+		class NewDropdown
+		{
+			keys;
+			names = [];
+			secondary = [];
+			imgs = [];
+		
+			element;
+			display;
+			internalList;
+			value;
+		
+			constructor(parent, totalID, keyList, nameList, images, secondaryValues = null)
+			{
+				this.keys = keyList;
+				this.names = nameList;
+				this.secondary = secondaryValues;
+				this.imgs = images;
+				this.value = 0;
+		
+				this.element = document.createElement('div');
+				this.element.classList.add("select");
+				this.element.addEventListener('mouseleave', () =>
+				{
+					this.internalList.style.display = "none";
+				});
+		
+				this.display = document.createElement('p');
+				this.display.classList.add('selectedName');
+				this.display.addEventListener('click', () =>
+				{
+					this.internalList.style.display = "block";
+				});
+				this.display.style.backgroundImage = `url('./Graphics/icons/${this.imgs[0]}.png')`;
+				this.display.innerText = this.names[0];
+		
+				this.internalList = document.createElement('div');
+				this.internalList.classList.add("selectList");
+		
+				for (let i = 0; i < this.keys.size; i++) {
+					let option = document.createElement('div');
+		
+					option.classList.add("option");
+					
+					option.style.backgroundImage = `url('./Graphics/icons/${this.imgs[i]}.png')`;
+					option.innerText = this.names[i];
+		
+					option.addEventListener('click', () =>
+					{
+						this.SetDisplayValue(i);
+						TotalUp(totalID);
+					});
+					
+					this.internalList.appendChild(option);
+				}
+				
+				this.element.appendChild(this.display);
+				this.element.appendChild(this.internalList);
+				parent.appendChild(this.element);
+			}
+		
+			SetDisplayValue(indx)
+			{
+				this.value = indx;
+				this.display.innerText = this.names[indx];
+				this.internalList.style.display = "none";
+				this.display.style.backgroundImage = `url('./Graphics/icons/${this.imgs[indx]}.png')`;
+			}
+		}
+		
+		let productAddSelect = document.getElementById("productMenu").getElementsByClassName("fieldGrid")[0];
+		let editorSelects = document.getElementsByClassName("controlTable")[0];
+		
+		let characterParmaters = [
+			new NewDropdown(
+				editorSelects,
+				2,
+				new Map().set(0, "full").set(1, "bust").set(2, "head"),
+				["Full Body", "Bust (-20%)", "Head (-40%)"],
+				["sticker", "sticker", "sticker"],
+				[1, 0.8, 0.6]
+			),
+			new NewDropdown(
+				editorSelects,
+				2,
+				new Map().set(0, "sketchy").set(1, "refined"),
+				["Sketchy", "Refined (+$15)"],
+				["sticker", "sticker"],
+				[0, 15]
+			),
+			new NewDropdown(
+				editorSelects,
+				2,
+				new Map().set(0, "plain").set(1, "colored").set(2, "shaded"),
+				["Plain", "Colored (+$25)", "Shaded (+$50)"],
+				["sticker", "sticker", "sticker"],
+				[0, 25, 50]
+			),
+		]
+		
+		let productDropdown =
+			new NewDropdown(
+				productAddSelect,
+				0,
+				new Map().set(0, "sticker").set(1, "emoji").set(2, "char_art"),
+				["STICKER SET", "EMOJI SET", "CHARACTER ART"],
+				["sticker", "emoji", "char_art"]
+			);
+	/*
+		Copyright MxNighthawk 2025. All Rights Reserved.
+		Programmed by Jesus Barajas Torres / MxNighthawk.
+	*/
+	
+	let productMenu = {
+		menu: document.getElementById("productMenu"),
+		controls: document.getElementById("productControl"),
+		products: []
+	};
+	let setMenu = {
+		menu: document.getElementById("setMenu"),
+		controls: document.getElementById("setControl")
+	};
+	let itemMenu = {
+		menu: document.getElementById("itemEditor"),
+		controls: document.getElementById("itemControl")
+	};
+	
+	let animSlider = document.getElementsByClassName("slider")[0].getElementsByTagName('input')[0];
+	let numberDisplay = document.getElementsByClassName("slider")[0].getElementsByClassName('sliderValue')[0];
+	
+	animSlider.addEventListener('input', () =>
+	{
+		numberDisplay.textContent = `${animSlider.value}s`;
+		itemClassPointer.motionID = animSlider.value;
+		TotalUp(2);
+	});
+	
+	let lastMenu = null;
+	let focusedMenu = productMenu;
+	
+	let invoiceBttn = document.getElementById("invoiceButton");
+	let aliasInput = document.getElementById("alias");
+	invoiceBttn.style.opacity = "0.25";
+	aliasInput.addEventListener('input', () =>
+	{
+		CheckDownloadability();
+	});
+	
+	let calculatorBody = document.getElementById("estimatorBoundary");
+	let calculatorMode = document.getElementById("modeTitle");
+	let productCardStack = productMenu.menu.getElementsByClassName("cards")[0];
+	let itemStack = setMenu.menu.getElementsByClassName("cards")[0];
+	
+	let initialPrice = 0;
+	let total = 0;
+	let setTotal = 0;
+	
+	let delElemPointer = null;
+	
+	let loadSetPointer = null;
+	let productClassPionter = null;
+	let itemClassPointer = null;
+	
+	class ControlRow
+	{
+		totalDisplay;
+		rowGroup;
+		edit;
+		del;
+	
+		constructor()
+		{
+			this.rowGroup = document.createElement('div');
+			this.rowGroup.classList.add("controlRow");
+	
+			this.totalDisplay = document.createElement('p');
+			this.totalDisplay.classList.add("total");
+	
+			this.edit = document.createElement('p');
+			this.edit.classList.add("editButton");
+			this.edit.innerText = "EDIT";
+	
+			this.del = document.createElement('p');
+			this.del.classList.add("deleteButton");
+			
+			this.rowGroup.appendChild(this.totalDisplay);
+			this.rowGroup.appendChild(this.edit);
+			this.rowGroup.appendChild(this.del);
+		}
+	}
+	class CardControl extends ControlRow
+	{
+		constructor(classPointer, elementPointer, setPointer, menuIndx)
+		{
+			super();
+			this.edit.addEventListener('click', () =>
+			{
+				loadSetPointer = setPointer;
+				productClassPionter = classPointer;
+				
+				DisplaySetCards(true);
+				SetFocusedMenu(menuIndx);
+				TotalUp(1);
+			});
+	
+			this.del.addEventListener('click', () =>
+			{
+				loadSetPointer = setPointer;
+				delElemPointer = elementPointer;
+				productClassPionter = classPointer;
+				
+				for (let i = loadSetPointer.length - 1; i >= 0; i--) {
+					const element = loadSetPointer[i].selfElement;
+					element.remove();
+				}
+	
+				loadSetPointer = [];
+				delElemPointer.remove();
+				productMenu.products.splice(productMenu.products.indexOf(productClassPionter), 1);
+				
+				CheckDownloadability();
+				TotalUp(0);
+			});
+		}
+	}
+	class ItemControl extends ControlRow
+	{
+		constructor(classPointer, elementPointer, menuIndx)
+		{
+			super();
+			this.edit.addEventListener('click', () =>
+			{
+				characterParmaters[0].element.style.setProperty("display", productClassPionter.prodName == "CHARACTER ART" ? "block" : "none");
+				characterParmaters[1].element.style.setProperty("display", productClassPionter.prodName == "CHARACTER ART" ? "block" : "none");
+				characterParmaters[2].element.style.setProperty("display", productClassPionter.prodName == "CHARACTER ART" ? "block" : "none");
+				itemClassPointer = classPointer;
+				
+				characterParmaters[0].SetDisplayValue(itemClassPointer.cropID);
+				characterParmaters[1].SetDisplayValue(itemClassPointer.lineID);
+				characterParmaters[2].SetDisplayValue(itemClassPointer.colorID);
+				
+				animSlider.value = itemClassPointer.motionID;
+				numberDisplay.textContent = `${animSlider.value}s`;
+	
+				TotalUp(2);
+				SetFocusedMenu(menuIndx);
+			});
+	
+			this.del.addEventListener('click', () =>
+			{
+				if(loadSetPointer.length == 1)
+					return;
+				
+				itemClassPointer = classPointer;
+				delElemPointer = elementPointer;
+				
+				loadSetPointer.splice(loadSetPointer.indexOf(itemClassPointer), 1);
+				delElemPointer.remove();
+	
+				if(loadSetPointer.length == 1)
+					loadSetPointer[0].row.del.style.opacity = "0.25";
+				
+				TotalUp(1);
+			});
+		}
+	}
+	
+	class Card
+	{
+		selfElement;
+		compoundedimage;
+		description;
+		cost = 0;
+	
+		graphic;
+		
+		constructor()
+		{
+			this.description = document.createElement('textarea');
+			this.description.autocomplete = "off";
+			this.description.classList.add("manualProductDesc");
+			
+			this.selfElement = document.createElement('div');
+			this.graphic = document.createElement('div');
+			this.graphic.classList.add("graphicPreview");
+		}
+	}
+	class ProductCard extends Card
+	{
+		manualName;
+		prodName;
+		items = [];
+		row;
+	
+		constructor(productName, menuIndx)
+		{
+			super();
+			this.selfElement.classList.add("productCard");
+			this.prodName = productName;
+	
+			let field = document.createElement('div');
+			field.classList.add("fieldGrid");
+			field.appendChild(this.graphic);
+			this.graphic.innerHTML +=
+			`
+				<p class="productName">${productName}</p>
+			`;
+	
+			switch(productName)
+			{
+				case "STICKER SET":
+					this.graphic.style.backgroundImage = "url('./Graphics/icons/sticker.png')";
+				break;
+				case "EMOJI SET":
+					this.graphic.style.backgroundImage = "url('./Graphics/icons/emoji.png')";
+				break;
+				case "CHARACTER ART":
+					this.graphic.style.backgroundImage = "url('./Graphics/icons/char_art.png')";
+				break;
+			}
+			
+			this.manualName = document.createElement('input');
+			this.manualName.classList.add("manualProductName");
+			this.manualName.autocomplete = "off";
+			this.manualName.placeholder = "Name your product...";
+			
+			this.description.placeholder = "Describe your commission in general...";
+			field.appendChild(this.manualName);
+			field.appendChild(this.description);
+	
+			productClassPionter = this;
+			loadSetPointer = this.items;
+	
+			this.row = new CardControl(this, this.selfElement, this.items, menuIndx);
+			this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+	
+			this.selfElement.appendChild(field);
+			this.selfElement.appendChild(this.row.rowGroup);
+			
+			let newItem = new ItemCard();
+			itemStack.appendChild(newItem.selfElement);
+			this.items.push(newItem);
+			
+			DisplaySetCards(false);
+			TotalUp(1);
+	
+			this.UpdateCost();
+			this.items[0].row.del.style.opacity = "0.25";
+		};
+	
+		UpdateCost()
+		{
+			this.cost = 0;
+	
+			for (let i = 0; i < this.items.length; i++) {
+				const element = this.items[i];
+				this.cost += element.cost;
+			}
+			
+			this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+		}
+	}
+	class ItemCard extends Card
+	{
+		cropID = 0;
+		lineID = 0;
+		colorID = 0;
+		motionID = 0;
+	
+		startingPrice = 0;
+	
+		row;
+		info;
+	
+		constructor()
+		{
+			super();
+			this.selfElement.classList.add("itemCard");
+	
+			let field = document.createElement('div');
+			field.classList.add("fieldGrid");
+			field.appendChild(this.graphic);
+	
+			switch(productClassPionter.prodName)
+			{
+				case "STICKER SET":
+					this.graphic.style.backgroundImage = "url('./Graphics/previews/stickers/sticker.webp')";
+					initialPrice = 16;
+				break;
+				case "EMOJI SET":
+					this.graphic.style.backgroundImage = "url('./Graphics/previews/emojis/emoji.webp')";
+					initialPrice = 10;
+				break;
+				case "CHARACTER ART":
+					this.graphic.style.backgroundImage = "url('./Graphics/previews/char_art/head_sketchy_plain.webp')";
+					initialPrice = 25;
+				break;
+			}
+	
+			this.info = document.createElement("p");
+			this.info.classList.add("styleInfo");
+			this.UpdateInfo();
+	
+			this.description.placeholder = "Describe the item...";
+			field.appendChild(this.description);
+			field.appendChild(this.info);
+	
+			this.startingPrice = initialPrice;
+			this.cost = initialPrice;
+	
+			this.row = new ItemControl(this, this.selfElement, 2);
+			this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+	
+			this.selfElement.appendChild(field);
+			this.selfElement.appendChild(this.row.rowGroup);
+		};
+	
+		UpdateCost(val)
+		{
+			this.cost = val;
+			this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+		}
+		
+		UpdateInfo()
+		{
+			if(productClassPionter.prodName != "CHARACTER ART")
+				this.info.innerHTML = `&middot; ${this.motionID}s`;
+			else
+			{
+				this.info.innerHTML = `&middot; ${characterParmaters[0].display.innerText}, ${characterParmaters[1].display.innerText}, ${characterParmaters[2].display.innerText}, ${this.motionID}s`;
+				this.graphic.style.backgroundImage = `url('./Graphics/previews/char_art/${characterParmaters[0].keys.get(this.cropID)}_${characterParmaters[1].keys.get(this.lineID)}_${characterParmaters[2].keys.get(this.colorID)}.webp')`;
+			}
+		}
+	}
+	
+	function SetFocusedMenu(id)
+	{
+		lastMenu = focusedMenu;
+		lastMenu.menu.style.setProperty("display", "none");
+		lastMenu.controls.style.setProperty("display", "none");
+	
+		switch(id)
+		{
+			case 0:
+				focusedMenu = productMenu;
+				calculatorBody.style.setProperty("--frameColor", "#765400");
+				calculatorBody.style.setProperty("--frameOutline", "#ffcc4a");
+				calculatorMode.innerText = "Commission Estimator";
+				break;
+			case 1:
+				focusedMenu = setMenu;
+				calculatorBody.style.setProperty("--frameColor", "#007a4e");
+				calculatorBody.style.setProperty("--frameOutline", "#00ffa3");
+				calculatorMode.innerText = "Edit Commission...";
+				break;
+			case 2:
+				focusedMenu = itemMenu;
+				itemMenu.menu.getElementsByClassName("graphicPreview")[0].style.backgroundImage = itemClassPointer.graphic.style.backgroundImage;
+				calculatorBody.style.setProperty("--frameColor", "#002f25");
+				calculatorBody.style.setProperty("--frameOutline", "#00ffa3");
+				calculatorMode.innerText = "Edit Item...";
+				break;
+		}
+		
+		focusedMenu.menu.style.setProperty("display", "block");
+		focusedMenu.controls.style.setProperty("display", "grid");
+	}
+	function DisplaySetCards(showOrHide)
+	{
+		for (let i = 0; i < loadSetPointer.length; i++) {
+			const element = loadSetPointer[i].selfElement;
+			element.style.setProperty("display", showOrHide ? "block" : "none");
+		}
+	}
+	
+	function TotalUp(id)
+	{
+		total = 0;
+	
+		switch(id)
+		{
+			case 0:
+				for (let i = 0; i < productMenu.products.length; i++) {
+					const element = productMenu.products[i];
+					total += element.cost;
+				}
+	
+				productMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `TOTAL &middot; $${total.toFixed(2)}`;
+				break;
+			case 1:
+				for (let i = 0; i < loadSetPointer.length; i++) {
+					const element = loadSetPointer[i];
+					total += element.cost;
+				}
+	
+				setMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `SET COST &middot; $${total.toFixed(2)}`;
+				break;
+			case 2:
+				if(productClassPionter.prodName == "CHARACTER ART")
+				{
+					itemClassPointer.cropID = characterParmaters[0].value;
+					itemClassPointer.lineID = characterParmaters[1].value;
+					itemClassPointer.colorID = characterParmaters[2].value;
+	
+					total = (itemClassPointer.startingPrice + characterParmaters[2].secondary[itemClassPointer.colorID] + characterParmaters[1].secondary[itemClassPointer.lineID]) * characterParmaters[0].secondary[itemClassPointer.cropID] * (1 + itemClassPointer.motionID * 0.8);
+				}
+				else
+					total = itemClassPointer.startingPrice * (1 + itemClassPointer.motionID * 0.8);
+				
+				itemClassPointer.UpdateInfo();
+				itemMenu.menu.getElementsByClassName("graphicPreview")[0].style.backgroundImage = itemClassPointer.graphic.style.backgroundImage;
+				itemMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `ITEM COST &middot; $${total.toFixed(2)}`;
+				break;
+		}
+	}
+	
+	function AddCard()
+	{
+		let newProduct = new ProductCard(productDropdown.names[productDropdown.value], 1);
+		productCardStack.appendChild(newProduct.selfElement);
+		productMenu.products.push(newProduct);
+	
+		CheckDownloadability();
+		TotalUp(0);
+	}
+	
+	function AddItem()
+	{
+		let newItem = new ItemCard();
+		itemStack.appendChild(newItem.selfElement);
+		loadSetPointer.push(newItem);
+		
+		productClassPionter.items[0].row.del.style.opacity = "1";
+	
+		TotalUp(1);
+	}
+	function CheckDownloadability()
+	{
+		if(aliasInput.value != "" && productMenu.products.length > 0)
+			invoiceBttn.style.opacity = "1";
+		else
+			invoiceBttn.style.opacity = "0.25";
+	}
+	
+	TotalUp(0);
+	
+	function PrintInvoice()
+	{
+		if(productMenu.products.length == 0)
+			return;
+	
+		let requestDetails = document.getElementById("requestDetails");
+		let ID = document.getElementById("requestID");
+		let customerName = document.getElementById("customerName");
+		let Time = new Date();
+	
+		let idNumber = (Time.getTime() / 1000).toFixed(0);
+	
+		ID.textContent = `ID: ${idNumber}`;
+		customerName.textContent = aliasInput.value;
+	
+		if(requestDetails.children.length > 0)
+			for (let c = requestDetails.children.length - 1; c >= 0; c--) {
+				const element = requestDetails.children[c];
+				element.remove();
+			}
+	
+		for (let i = 0; i < productMenu.products.length; i++) {
+			const product = productMenu.products[i];
+	
+			let productEntry = document.createElement('div');
+			productEntry.classList.add("productEntry");
+	
+			let setTable = document.createElement('div');
+			let titelRow = document.createElement('div');
+	
+			let setRow = document.createElement('div');
+			setRow.classList.add("setRow");
+	
+			let setIcon = document.createElement('div');
+			setIcon.classList.add("setIcon");
+			
+			switch(product.prodName)
+			{
+				case "STICKER SET":
+					setIcon.style.backgroundImage = "url('./Graphics/icons/sticker_blk.png')";
+				break;
+				case "EMOJI SET":
+					setIcon.style.backgroundImage = "url('./Graphics/icons/emoji_blk.png')";
+				break;
+				case "CHARACTER ART":
+					setIcon.style.backgroundImage = "url('./Graphics/icons/char_art_blk.png')";
+				break;
+			}
+	
+			setRow.appendChild(setIcon);
+			setRow.innerHTML +=
+			`
+				<p class="setInfo">
+					<b>${product.prodName} - ${product.manualName.value}</b>
+					<br>${product.description.value}
+				</p>
+			`;
+	
+			setTable.appendChild(setRow);
+	
+			titelRow.innerHTML +=
+			`
+				<p>#</p>
+				<p>DESCRIPTION</p>
+				<p>STYLE</p>
+				<p>PRICE</p>
+			`;
+			
+			setTable.classList.add("setTable");
+			titelRow.classList.add("titleRow");
+	
+			productEntry.appendChild(setTable);
+			productEntry.appendChild(titelRow);
+			
+			for (let t = 0; t < product.items.length; t++) {
+				const item = product.items[t];
+				
+				let informationRow = document.createElement('div');
+				informationRow.innerHTML +=
+				`
+					<p></p>
+					<p></p>
+					<p></p>
+					<p></p>
+				`;
+	
+				informationRow.classList.add("informationRow");
+				let pS = informationRow.getElementsByTagName('p');
+	
+				pS[0].textContent = t + 1;
+				pS[1].textContent = item.description.value;
+				pS[2].innerHTML = item.info.innerHTML;
+				pS[3].textContent = `${item.cost.toFixed(2)}`;
+	
+				productEntry.appendChild(informationRow);
+			}
+	
+			let setTotal = document.createElement('p');
+			setTotal.classList.add("setTotal");
+			setTotal.textContent = `PRODUCT TOTAL: $${product.cost.toFixed(2)}`;
+	
+			productEntry.appendChild(setTotal);
+			requestDetails.appendChild(productEntry);
+		}
+	
+		let totalPrice = document.getElementById("invoiceTotal");
+		totalPrice.innerHTML = `TOTAL ESTIMATE: $${total.toFixed(2)}`;
+	
+		let stamps = document.getElementById("timestamp");
+		stamps.textContent = Time;
+	
+		let clone = document.getElementById("print");
+		
+		let pdfOptions = {
+			filename: `commission_request_${idNumber}.pdf`,
+			html2canvas : { scale: 1 }
+		};
+	
+		let final_pdf = html2pdf().set(pdfOptions).from(clone.innerHTML);
+
+		console.log(final_pdf);
+
+		final_pdf.save();
+	}
+	
+	</script>
+
+</html>
