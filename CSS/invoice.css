@@ -56,6 +56,9 @@
 
 	align-items: center;
 }
+#disclaimer {
+	padding: 16px;
+}
 #invoiceFooter img {
 	max-width: 256px;
 	padding: 16px;
@@ -152,7 +155,7 @@
 
 .titleRow, .informationRow {
 	display: grid;
-	grid-template-columns: 32px 1fr 0.5fr 0.5fr;
+	grid-template-columns: 32px 1fr 0.75fr 0.25fr;
 }
 .titleRow {
 	border-bottom: solid black 2px;

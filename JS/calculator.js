@@ -550,7 +550,8 @@ function PrintInvoice()
 	
 	let pdfOptions = {
 		filename: `commission_request_${idNumber}.pdf`,
-		html2canvas : { scale: 1 }
+		html2canvas : { scale: 1 },
+		pagebreak: { mode: ['avoid-all', 'legacy']} 
 	};
 
 	html2pdf().set(pdfOptions).from(clone.innerHTML).save();
