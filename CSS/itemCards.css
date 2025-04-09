@@ -277,25 +277,3 @@ textarea, input[type="text"]:focus {
 	color: black;
 	background-color: #00ffa3;
 }
-
-@media (max-width: 750px) {
-	#invoiceDownload {
-		grid-template-columns: 1fr;
-		grid-template-rows: 1fr 1fr;
-	}
-	.saveControlRow {
-		grid-template-columns: 1fr;
-		grid-template-rows: auto auto;
-	}
-	.controlRow {
-		grid-template-columns: 1fr;
-		grid-template-rows: max-content max-content 32px;
-	}
-	.grandTotal {
-		text-align: center;
-	}
-	.fieldGrid:not(.addCard .fieldGrid) {
-		grid-template-columns: 1fr;
-		grid-template-rows: 144px min-content 1.5fr;
-	}
-}

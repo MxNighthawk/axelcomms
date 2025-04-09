@@ -437,7 +437,7 @@ TotalUp(0);
 
 function PrintInvoice()
 {
-	if(productMenu.products.length == 0)
+	if(invoiceBttn.style.opacity != "1")
 		return;
 
 	let requestDetails = document.getElementById("requestDetails");
