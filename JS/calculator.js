@@ -131,6 +131,7 @@ class ItemControl extends ControlRow
 			characterParmaters[1].SetDisplayValue(itemClassPointer.lineID);
 			characterParmaters[2].SetDisplayValue(itemClassPointer.colorID);
 			
+			animSlider.max = productClassPionter.prodName == "CHARACTER ART" ? 10 : 3;
 			animSlider.value = itemClassPointer.motionID;
 			numberDisplay.textContent = `${animSlider.value}s`;
 

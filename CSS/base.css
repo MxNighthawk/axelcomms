@@ -145,6 +145,7 @@ hr {
 
 .select {
 	user-select: none;
+	
 	background-color: #00221B;
 	color: white;
 
@@ -185,11 +186,8 @@ hr {
 	outline: dashed 2px #007a4e;
 	border-radius: 4px;
 
-	position: absolute;
+	position: fixed;
 	z-index: 1;
-
-	right: 0px;
-	left: 0px;
 }
 
 .option, .selectedName {

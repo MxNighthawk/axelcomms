@@ -35,6 +35,9 @@ class NewDropdown
 		this.display.addEventListener('click', () =>
 		{
 			this.internalList.style.display = "block";
+			this.internalList.style.width = `${this.element.clientWidth}px`;
+			this.internalList.style.top = `${this.element.getBoundingClientRect().y}px`;
+			
 		});
 		this.display.style.backgroundImage = `url('./Graphics/icons/${this.imgs[0]}.webp')`;
 		this.display.innerText = this.names[0];
