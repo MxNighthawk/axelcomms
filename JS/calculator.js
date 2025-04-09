@@ -201,13 +201,13 @@ class ProductCard extends Card
 		switch(productName)
 		{
 			case "STICKER SET":
-				this.graphic.style.backgroundImage = "url('./Graphics/icons/sticker.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/icons/sticker.webp')";
 			break;
 			case "EMOJI SET":
-				this.graphic.style.backgroundImage = "url('./Graphics/icons/emoji.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/icons/emoji.webp')";
 			break;
 			case "CHARACTER ART":
-				this.graphic.style.backgroundImage = "url('./Graphics/icons/char_art.png')";
+				this.graphic.style.backgroundImage = "url('./Graphics/icons/char_art.webp')";
 			break;
 		}
 		
@@ -474,13 +474,13 @@ function PrintInvoice()
 		switch(product.prodName)
 		{
 			case "STICKER SET":
-				setIcon.style.backgroundImage = "url('./Graphics/icons/sticker_blk.png')";
+				setIcon.style.backgroundImage = "url('./Graphics/icons/sticker_blk.webp')";
 			break;
 			case "EMOJI SET":
-				setIcon.style.backgroundImage = "url('./Graphics/icons/emoji_blk.png')";
+				setIcon.style.backgroundImage = "url('./Graphics/icons/emoji_blk.webp')";
 			break;
 			case "CHARACTER ART":
-				setIcon.style.backgroundImage = "url('./Graphics/icons/char_art_blk.png')";
+				setIcon.style.backgroundImage = "url('./Graphics/icons/char_art_blk.webp')";
 			break;
 		}
 

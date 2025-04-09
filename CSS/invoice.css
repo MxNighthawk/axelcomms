@@ -18,7 +18,7 @@
 	justify-content: space-between;
 }
 #totalTitle {
-	background-image: url('../Graphics/icons/money_total.png');
+	background-image: url('../Graphics/icons/money_total.webp');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: left;
@@ -134,7 +134,7 @@
 .setIcon {
 	width: 32px;
 	
-	background-image: url('../Graphics/icons/sticker_blk.png');
+	background-image: url('../Graphics/icons/sticker_blk.webp');
 	background-size: 16px;
 	background-position: center 12px;
 	background-repeat: no-repeat;

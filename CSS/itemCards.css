@@ -74,7 +74,7 @@ a {
 	margin-left: 0px;
 }
 .styleInfo {
-	background-image: url('../Graphics/icons/info.png');
+	background-image: url('../Graphics/icons/info.webp');
 	background-size: 24px;
 
 	background-repeat: no-repeat;
@@ -202,7 +202,7 @@ textarea, input[type="text"]:focus {
 }
 
 .total, .grandTotal {
-	background-image: url('../Graphics/icons/money.png');
+	background-image: url('../Graphics/icons/money.webp');
 	background-size: 24px;
 
 	background-repeat: no-repeat;
@@ -248,21 +248,21 @@ textarea, input[type="text"]:focus {
 	cursor: pointer;
 }
 .editButton {
-	background-image: url('../Graphics/icons/wrench.png');
+	background-image: url('../Graphics/icons/wrench.webp');
 	background-position: 4px;
 
 	color: black;
 	background-color: #00ffa3;
 }
 .deleteButton {
-	background-image: url('../Graphics/icons/delete.png');
+	background-image: url('../Graphics/icons/delete.webp');
 	background-position: center;
 
 	color: white;
 	background-color: #fd2bcb;
 }
 #invoiceButton {
-	background-image: url('../Graphics/icons/download.png');
+	background-image: url('../Graphics/icons/download.webp');
 	background-position: 8px;
 
 	font-size: 21px;
