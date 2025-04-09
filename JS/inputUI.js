@@ -36,7 +36,7 @@ class NewDropdown
 		{
 			this.internalList.style.display = "block";
 		});
-		this.display.style.backgroundImage = `url('./Graphics/icons/${this.imgs[0]}.png')`;
+		this.display.style.backgroundImage = `url('./Graphics/icons/${this.imgs[0]}.webp')`;
 		this.display.innerText = this.names[0];
 
 		this.internalList = document.createElement('div');
@@ -47,7 +47,7 @@ class NewDropdown
 
 			option.classList.add("option");
 			
-			option.style.backgroundImage = `url('./Graphics/icons/${this.imgs[i]}.png')`;
+			option.style.backgroundImage = `url('./Graphics/icons/${this.imgs[i]}.webp')`;
 			option.innerText = this.names[i];
 
 			option.addEventListener('click', () =>
@@ -69,7 +69,7 @@ class NewDropdown
 		this.value = indx;
 		this.display.innerText = this.names[indx];
 		this.internalList.style.display = "none";
-		this.display.style.backgroundImage = `url('./Graphics/icons/${this.imgs[indx]}.png')`;
+		this.display.style.backgroundImage = `url('./Graphics/icons/${this.imgs[indx]}.webp')`;
 	}
 }
 
