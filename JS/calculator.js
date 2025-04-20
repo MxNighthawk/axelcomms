@@ -250,7 +250,7 @@ class ProductCard extends Card
 			this.cost += element.cost;
 		}
 		
-		this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+		this.row.totalDisplay.innerHTML = `&euro;${this.cost.toFixed(2)}`;
 	}
 }
 class ItemCard extends Card
@@ -278,15 +278,15 @@ class ItemCard extends Card
 		{
 			case "STICKER SET":
 				this.graphic.style.backgroundImage = "url('./Graphics/previews/stickers/sticker.webp')";
-				initialPrice = 16;
+				initialPrice = 16 * 0.9;
 			break;
 			case "EMOJI SET":
 				this.graphic.style.backgroundImage = "url('./Graphics/previews/emojis/emoji.webp')";
-				initialPrice = 10;
+				initialPrice = 10 * 0.9;
 			break;
 			case "CHARACTER ART":
 				this.graphic.style.backgroundImage = "url('./Graphics/previews/char_art/head_sketchy_plain.webp')";
-				initialPrice = 25;
+				initialPrice = 25 * 0.9;
 			break;
 		}
 
@@ -302,7 +302,7 @@ class ItemCard extends Card
 		this.cost = initialPrice;
 
 		this.row = new ItemControl(this, this.selfElement, 2);
-		this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+		this.row.totalDisplay.innerHTML = `&euro;${this.cost.toFixed(2)}`;
 
 		this.selfElement.appendChild(field);
 		this.selfElement.appendChild(this.row.rowGroup);
@@ -311,7 +311,7 @@ class ItemCard extends Card
 	UpdateCost(val)
 	{
 		this.cost = val;
-		this.row.totalDisplay.innerHTML = `$${this.cost.toFixed(2)}`;
+		this.row.totalDisplay.innerHTML = `&euro;${this.cost.toFixed(2)}`;
 	}
 	
 	UpdateInfo()
@@ -378,7 +378,7 @@ function TotalUp(id)
 				total += element.cost;
 			}
 
-			productMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `TOTAL &middot; $${total.toFixed(2)}`;
+			productMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `TOTAL &middot; &euro;${total.toFixed(2)}`;
 			break;
 		case 1:
 			for (let i = 0; i < loadSetPointer.length; i++) {
@@ -386,7 +386,7 @@ function TotalUp(id)
 				total += element.cost;
 			}
 
-			setMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `SET COST &middot; $${total.toFixed(2)}`;
+			setMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `SET COST &middot; &euro;${total.toFixed(2)}`;
 			break;
 		case 2:
 			if(productClassPionter.prodName == "CHARACTER ART")
@@ -402,7 +402,7 @@ function TotalUp(id)
 			
 			itemClassPointer.UpdateInfo();
 			itemMenu.menu.getElementsByClassName("graphicPreview")[0].style.backgroundImage = itemClassPointer.graphic.style.backgroundImage;
-			itemMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `ITEM COST &middot; $${total.toFixed(2)}`;
+			itemMenu.controls.getElementsByClassName("grandTotal")[0].innerHTML = `ITEM COST &middot; &euro;${total.toFixed(2)}`;
 			break;
 	}
 }
@@ -535,14 +535,14 @@ function PrintInvoice()
 
 		let setTotal = document.createElement('p');
 		setTotal.classList.add("setTotal");
-		setTotal.textContent = `PRODUCT TOTAL: $${product.cost.toFixed(2)}`;
+		setTotal.innerHTML = `PRODUCT TOTAL: &euro;${product.cost.toFixed(2)}`;
 
 		productEntry.appendChild(setTotal);
 		requestDetails.appendChild(productEntry);
 	}
 
 	let totalPrice = document.getElementById("invoiceTotal");
-	totalPrice.innerHTML = `TOTAL ESTIMATE: $${total.toFixed(2)}`;
+	totalPrice.innerHTML = `TOTAL ESTIMATE: &euro;${total.toFixed(2)}`;
 
 	let stamps = document.getElementById("timestamp");
 	stamps.textContent = Time;

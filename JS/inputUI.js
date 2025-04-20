@@ -92,17 +92,17 @@ let characterParmaters = [
 		editorSelects,
 		2,
 		new Map().set(0, "sketchy").set(1, "refined"),
-		["Sketchy", "Refined (+$15)"],
+		["Sketchy", "Refined (+15)"],
 		["sticker", "sticker"],
-		[0, 15]
+		[0, 15 * 0.9]
 	),
 	new NewDropdown(
 		editorSelects,
 		2,
 		new Map().set(0, "plain").set(1, "colored").set(2, "shaded"),
-		["Plain", "Colored (+$25)", "Shaded (+$50)"],
+		["Plain", "Colored (+22.50)", "Shaded (+45)"],
 		["sticker", "sticker", "sticker"],
-		[0, 25, 50]
+		[0, 25 * 0.9, 50 * 0.9]
 	),
 ]
 

@@ -61,25 +61,25 @@
 				</div>
 
 				<div class="saveControlRow" id="productControl">
-					<p class="grandTotal">TOTAL &middot; $</p>
+					<p class="grandTotal">TOTAL &middot; &euro;</p>
 					<div id="invoiceDownload">
 						<input id="alias" type="text" autocomplete="off" placeholder="Your (user)name - REQUIRED">
 						<a href="javascript:PrintInvoice();" id="invoiceButton">GET INVOICE</a>
 					</div>
 				</div>
 				<div class="saveControlRow" id="setControl">
-					<p class="grandTotal">SET COST &middot; $</p>
+					<p class="grandTotal">SET COST &middot; &euro;</p>
 					<a href="javascript:DisplaySetCards(false);SetFocusedMenu(0);productClassPionter.UpdateCost();TotalUp(0);" id="updateSet">UPDATE SET</a>
 				</div>
 				<div class="saveControlRow" id="itemControl">
-					<p class="grandTotal">ITEM COST &middot; $</p>
+					<p class="grandTotal">ITEM COST &middot; &euro;</p>
 					<a href="javascript:SetFocusedMenu(1);itemClassPointer.UpdateCost(total);TotalUp(1);" id="updateItem">UPDATE ITEM</a>
 				</div>
 			</div>
 
 			<a id="credits" href="https://x.com/NighthawkDev" target="_blank">
 				Created by: Jesus Barajas / NighthawkDev
-				<br><small>Calculator v1.1.3, 04/09/2025, 5:48 PM CST</small>
+				<br><small>Calculator v1.2.0, 04/20/2025, 12:37 PM CST</small>
 			</a>
 		</div>
 		
@@ -134,7 +134,7 @@
 		</div>
 	</body>
 
-	<script src="./JS/inputUI.js?version=1.1.0"></script>
-	<script src="./JS/calculator.js?version=1.1.2"></script>
+	<script src="./JS/inputUI.js?version=1.2.0"></script>
+	<script src="./JS/calculator.js?version=1.2.0"></script>
 	<script src="./JS/dist/html2pdf.bundle.min.js?version=0.10.0"></script>
 </html>
