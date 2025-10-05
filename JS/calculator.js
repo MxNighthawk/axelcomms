@@ -278,15 +278,15 @@ class ItemCard extends Card
 		{
 			case "STICKER SET":
 				this.graphic.style.backgroundImage = "url('./Graphics/previews/stickers/sticker.webp')";
-				initialPrice = 16 * 0.9;
+				initialPrice = 16;
 			break;
 			case "EMOJI SET":
 				this.graphic.style.backgroundImage = "url('./Graphics/previews/emojis/emoji.webp')";
-				initialPrice = 10 * 0.9;
+				initialPrice = 10;
 			break;
 			case "CHARACTER ART":
 				this.graphic.style.backgroundImage = "url('./Graphics/previews/char_art/head_sketchy_plain.webp')";
-				initialPrice = 25 * 0.9;
+				initialPrice = 25;
 			break;
 		}
 
